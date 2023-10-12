@@ -1,0 +1,7 @@
+1.Webpack setup
+2.Folders creation
+3.React project files
+4.Amazon s3 setup
+5.Backend setup
+6.API creation
+7.CI/CD
