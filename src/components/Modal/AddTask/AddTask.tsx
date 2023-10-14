@@ -22,9 +22,9 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
       <Stack direction="column" gap={2}>
         <Typography>Add New Task</Typography>
         <FormInput name="title" label="Title" control={control} />
-        <FormInput name="title" label="Description" control={control} />
-        <FormInput name="title" label="Subtasks" control={control} />
-        <FormInput name="title" label="Status" control={control} />
+        <FormInput name="description" label="Description" control={control} />
+        <FormInput name="subtasks" label="Subtasks" control={control} />
+        <FormInput name="status" label="Status" control={control} />
         <Button
           title={'Create Task'}
           variant={'contained'}

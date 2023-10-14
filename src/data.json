@@ -13,7 +13,7 @@
               "subtasks": [
                 {
                   "title": "Sign up page",
-                  "isCompleted": true
+                  "isCompleted":  true
                 },
                 {
                   "title": "Sign in page",
