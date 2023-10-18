@@ -1,4 +1,5 @@
 {
+  "quoteProps": "as-needed",
     "semi": true,
     "trailingComma": "all",
     "singleQuote": true,

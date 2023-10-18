@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const  boardSlice = createSlice({
   name: 'boards',
-  initialState: [{id:1, name: 'Platform Launch', columns: [{name:'Todo' },{name:'Doing' }]}],
+  initialState: [{id:1, name: 'Platform Launch'}],
   reducers: {
     addBoard: (state:any, action:any) => {
        return [...state,action.payload]

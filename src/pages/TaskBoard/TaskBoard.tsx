@@ -8,29 +8,36 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Task } from '../../components/Task/types';
 import { AddTask } from '../../components/Modal/AddTask';
+import { useSelector } from 'react-redux';
+import { columnsSelector } from '../../redux/columns/selector';
+import { tasksSelector } from '../../redux/task/selectors';
+import { UpdateTask } from '../../components/Modal/UpdateTask';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
-  const [columns, setColumns] = useState(data.boards[0].columns);
+  const columns = useSelector(columnsSelector);
+  const tasks = useSelector(tasksSelector);
 
-  const updateTaskColumn = (task: Task, updatedStatus: string) => {
-    let filteredColumnIndex: any = columns.findIndex(
-      (column) => column.name === task.status,
-    );
+  console.log('Columns,', columns, 'tasks', tasks);
 
-    let filteredTasks = columns[filteredColumnIndex].tasks.filter(
-      (taskItem: any) => taskItem.title !== task.title,
-    );
+  // const updateTaskColumn = (task: Task, updatedStatus: string) => {
+  //   let filteredColumnIndex: any = columns.findIndex(
+  //     (column) => column.name === task.status,
+  //   );
 
-    columns[filteredColumnIndex].tasks = filteredTasks;
-    let finalColumnIndex: any = columns.findIndex(
-      (column) => column.name === updatedStatus,
-    );
+  //   let filteredTasks = columns[filteredColumnIndex].tasks.filter(
+  //     (taskItem: any) => taskItem.title !== task.title,
+  //   );
 
-    task.status = updatedStatus;
-    columns[finalColumnIndex].tasks.push(task);
-    console.log('columns ', columns);
-    setColumns([...columns]);
-  };
+  //   columns[filteredColumnIndex].tasks = filteredTasks;
+  //   let finalColumnIndex: any = columns.findIndex(
+  //     (column) => column.name === updatedStatus,
+  //   );
+
+  //   task.status = updatedStatus;
+  //   columns[finalColumnIndex].tasks.push(task);
+  //   console.log('columns ', columns);
+  //   setColumns([...columns]);
+  // };
 
   return (
     <>
@@ -57,13 +64,13 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
             <Stack direction="column">
               <TaskState
                 taskState={column.name}
-                taskCount={column.tasks.length}
+                taskCount={tasks[column.name].length}
                 color={'#49C4E5'}
               />
               <DndProvider backend={HTML5Backend}>
                 <TaskColumn
-                  tasks={column.tasks}
-                  updateTaskColumn={updateTaskColumn}
+                  tasks={tasks[column.name]}
+                  updateTaskColumn={(): any => null}
                 />
               </DndProvider>
             </Stack>
