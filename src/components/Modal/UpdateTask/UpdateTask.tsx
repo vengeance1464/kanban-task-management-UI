@@ -1,18 +1,27 @@
 import { Stack, Typography } from '@mui/material';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateSubTask } from '../../../redux/task/taskSlice';
 import { FormCheckboxInput } from '../../Form/FormCheckboxInput';
+import { More } from '../../Icons/More';
+import { Menu } from '../../Menu/Menu';
 import { SubTask, Task } from '../../Task/types';
+import { AddTask } from '../AddTask';
 import { BaseModal } from '../BaseModal';
+import { Delete } from '../Delete';
 import { UpdateTaskProps } from '../types';
+import { deleteTask } from '../../../redux/task/taskSlice';
 
 const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
   open,
   handleClose,
   task,
 }) => {
+  console.log('Task ', task);
   const dispatch = useDispatch();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [editTask, setEditTask] = useState(false);
+  const [deleteCurrentTask, setDeleteCurrentTask] = useState(false);
 
   // const taskRef = useRef({ ...task });
   const onSubtaskSelected = (index: number) => {
@@ -31,6 +40,11 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
     return [0, 0];
   };
 
+  const onMoreClick = () => {
+    console.log('on click ran');
+    setMenuOpen(true);
+  };
+
   return (
     <BaseModal
       open={open}
@@ -39,7 +53,10 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
       }}
     >
       <Stack direction="column" gap={1}>
-        <Typography>{task.title}</Typography>
+        <Stack direction="row" justifyContent={'space-between'}>
+          <Typography>{task.title}</Typography>
+          <More onClick={onMoreClick} />
+        </Stack>
         <Typography>{task.description}</Typography>
         <Typography>
           Subtasks({getSubtasks(task)[1]} of {getSubtasks(task)[0]} )
@@ -54,6 +71,42 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
             />
           ))}
       </Stack>
+      {menuOpen && (
+        <Menu
+          items={['Edit Task', 'Delete Task']}
+          open={menuOpen}
+          handleItem={(index: number) => {
+            if (index === 0) {
+              setEditTask(true);
+            } else {
+              setDeleteCurrentTask(true);
+            }
+          }}
+          handleClose={undefined}
+        />
+      )}
+      {editTask && (
+        <AddTask
+          open={editTask}
+          isUpdate={true}
+          handleClose={() => setEditTask(false)}
+          task={task}
+        />
+      )}
+      {deleteCurrentTask && (
+        <Delete
+          onDelete={() => {
+            dispatch(deleteTask(task));
+            setDeleteCurrentTask(false);
+          }}
+          onCancel={() => setDeleteCurrentTask(false)}
+          title={'Delete this task?'}
+          description={`Are you sure you want to delete the 
+            ‘${task.title}’ task and its subtasks? This action cannot be reversed.`}
+          open={deleteCurrentTask}
+          handleClose={() => setDeleteCurrentTask(false)}
+        />
+      )}
     </BaseModal>
   );
 };

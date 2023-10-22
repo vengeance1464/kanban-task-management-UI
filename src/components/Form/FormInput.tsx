@@ -8,7 +8,9 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
   control,
   label,
   children,
+  initialValue,
 }) => {
+  console.log('initial,', initialValue);
   return (
     <>
       <Stack direction="column">
@@ -28,6 +30,7 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
                 error={!!error}
                 onChange={onChange}
                 value={value}
+                defaultValue={initialValue ? initialValue : ''}
                 fullWidth
                 label={''}
                 variant="outlined"

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Task } from '../../components/Task/types';
-import { UpdateSubtaskActionType } from './types';
+import { SubtaskActionType } from './types';
 
 const  taskSlice = createSlice({
   name: 'tasks',
@@ -266,6 +266,7 @@ const  taskSlice = createSlice({
        return [...state,action.payload]
     },
     editTask:(state:any,action:PayloadAction<Task>)=>{
+      console.log("edit",action.payload)
       const filteredTaskIndex=state.findIndex((task:any)=>task.id===action.payload.id)
       if(filteredTaskIndex!==-1)
       {
@@ -274,7 +275,7 @@ const  taskSlice = createSlice({
 
       return state
     },
-    deleteTask:(state:any, action:any) => {
+    deleteTask:(state:any, action:PayloadAction<Task>) => {
         const filteredTaskIndex=state.findIndex((task:any)=>task.id===action.payload.id)
         if(filteredTaskIndex!==-1)
         {
@@ -283,7 +284,7 @@ const  taskSlice = createSlice({
 
         return state
      },
-     updateSubTask:(state:any,action:PayloadAction<UpdateSubtaskActionType>)=>{
+     updateSubTask:(state:any,action:PayloadAction<SubtaskActionType>)=>{
       const filteredTaskIndex=state.findIndex((task:any)=>task.id===action.payload.id)
 
          if(filteredTaskIndex!==-1)
@@ -292,9 +293,18 @@ const  taskSlice = createSlice({
         }
 
         return state
-     } 
+     },
+     deleteSubTask:(state:any, action:PayloadAction<SubtaskActionType>) => {
+      const filteredTaskIndex=state.findIndex((task:any)=>task.id===action.payload.id)
+      if(filteredTaskIndex!==-1)
+      {
+        state[filteredTaskIndex].subtasks.splice(action.payload.subTaskIndex,1)
+      }
+
+      return state
+   },
   }
 });
 
-export const { addTask,  editTask,deleteTask,updateSubTask} = taskSlice.actions;
+export const { addTask,  editTask,deleteTask,updateSubTask,deleteSubTask} = taskSlice.actions;
 export default taskSlice.reducer;

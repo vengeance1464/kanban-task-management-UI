@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { columnsSelector } from '../../redux/columns/selector';
 import { tasksSelector } from '../../redux/task/selectors';
 import { UpdateTask } from '../../components/Modal/UpdateTask';
+import { Delete } from '../../components/Modal/Delete';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   const columns = useSelector(columnsSelector);
@@ -77,9 +78,7 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
           );
         })}
       </Stack>
-      {open && (
-        <AddTask open={open} handleClose={() => setOpen(false)} status="TODO" />
-      )}
+      {open && <AddTask open={open} handleClose={() => setOpen(false)} />}
     </>
   );
 };

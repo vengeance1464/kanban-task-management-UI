@@ -40,11 +40,7 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
         </Stack>
       </Box>
       {updateTask && (
-        <UpdateTask
-          open={updateTask}
-          handleClose={handleClose}
-          task={{ ...task }}
-        />
+        <UpdateTask open={updateTask} handleClose={handleClose} task={task} />
       )}
     </>
   );

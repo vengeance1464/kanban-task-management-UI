@@ -1,8 +1,8 @@
 import { Task } from "../../components/Task/types"
 
-type UpdateSubtaskActionType={
+type SubtaskActionType={
     
     subTaskIndex:number
 } & Task
 
-export {UpdateSubtaskActionType}
+export {SubtaskActionType}

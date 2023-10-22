@@ -18,6 +18,7 @@ const filterSubtasks=(data:any)=>{
 export const mapAddTaskData=(data:any):Task=>{
 console.log("data",data)
      let task={} as Task
+     task.id=data.id
      task.title=data.title
      task.description=data.description
      task.status=data.status

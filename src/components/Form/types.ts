@@ -4,6 +4,7 @@ import { SubTask } from "../Task/types";
     name:string;
      control:any;
      label?:string
+     initialValue?:string
   }
 
   export type FormCheckboxProps={
@@ -11,3 +12,7 @@ import { SubTask } from "../Task/types";
     onClick?:()=>void
     isChecked:boolean
   }
+
+  export type FormDropdownProps={
+    items:string []
+  } &   FormInputProps
