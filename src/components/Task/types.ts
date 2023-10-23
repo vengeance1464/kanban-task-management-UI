@@ -5,6 +5,7 @@ export interface ITaskProps {
 export type SubTask = {
   title: string;
   isCompleted: boolean;
+  id:number
 };
 export type Task = {
   id:number;

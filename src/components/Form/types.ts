@@ -4,7 +4,8 @@ import { SubTask } from "../Task/types";
     name:string;
      control:any;
      label?:string
-     initialValue?:string
+     initialValue?:SubTask
+     register:any
   }
 
   export type FormCheckboxProps={

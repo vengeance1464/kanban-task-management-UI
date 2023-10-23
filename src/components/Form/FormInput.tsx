@@ -9,6 +9,7 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
   label,
   children,
   initialValue,
+  register,
 }) => {
   console.log('initial,', initialValue);
   return (
@@ -18,19 +19,16 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
         <Controller
           name={name}
           control={control}
-          render={({
-            field: { onChange, value },
-            fieldState: { error },
-            formState,
-          }) => (
+          render={({ field, fieldState: { error }, formState }) => (
             <Stack direction="row" gap={2} alignItems="center">
               <TextField
                 helperText={error ? error.message : null}
                 size="small"
                 error={!!error}
-                onChange={onChange}
-                value={value}
-                defaultValue={initialValue ? initialValue : ''}
+                {...field}
+                //onChange={onChange}
+                //value={value}
+                //defaultValue={initialValue ? initialValue : ''}
                 fullWidth
                 label={''}
                 variant="outlined"

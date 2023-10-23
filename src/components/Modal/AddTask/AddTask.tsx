@@ -1,6 +1,6 @@
 import { Dialog, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { columnsSelector } from '../../../redux/columns/selector';
@@ -26,21 +26,47 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
   const columns = useSelector(columnsSelector);
   console.log('Add task ', task);
   //const [subTasks, setSubTasks] = useState(isUpdate ? task.subtasks.length : 1);
-  const { handleSubmit, reset, control, setValue } = useForm({
+  const { handleSubmit, reset, control, setValue, register } = useForm({
     defaultValues: {
       title: task ? task.title : '',
       description: task ? task.description : '',
       status: task ? task.status : '',
+      subTasks: task ? task.subtasks : [],
     },
   });
+
+  const {
+    control: subTaskControl,
+    reset: resetSubTasks,
+    getValues,
+  } = useForm();
+
+  //const { register, control: subTaskControl } = useForm();
+
+  // const watchedFields = useWatch({
+  //   control: subTaskControl,
+  //   names: dynamicNames,
+  // });
+
   const [subTasksList, setSubTasksList] = useState<string[]>(() => {
     if (task) {
       console.log('setting SUbtasks');
       return task.subtasks.map((subTask) => subTask.title);
     } else {
-      return [''];
+      return [];
     }
   });
+
+  const { fields, append, remove } = useFieldArray<any>({
+    control: control,
+    name: 'subTasks',
+  });
+
+  // const [subTaskKeys, setSubTaskKeys] = useState(() => {
+  //   return subTasksList.map((_, index) => `subTask-${index}`);
+  // });
+
+  // const watchFields = watch(subTaskKeys);
 
   console.log('subtasks', subTasksList);
 
@@ -68,9 +94,20 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
   //   }
   //   return subTasksList;
   // };
+  // useEffect(() => {
+  //   resetSubTasks(
+  //     task ? ({ subTasks: task.subtasks } as any) : { subTasks: [] },
+  //   );
+  // }, []);
 
   const onSubmit = (data: any) => {
-    const mappedFormData = mapAddTaskData({ ...data, id: task.id });
+    console.log('data ', data, getValues());
+    // console.log('watch ', watchFields);
+    const mappedFormData = mapAddTaskData({
+      ...data,
+      id: task.id,
+      ...getValues(),
+    });
     console.log('mappedData', mappedFormData);
     if (isUpdate) dispatch(editTask(mappedFormData));
     else dispatch(addTask(mappedFormData));
@@ -80,11 +117,13 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
   const onCrossClick = (index: number) => {
     console.log('list ');
 
-    setSubTasksList((subTasksList: string[]) => {
-      const list = subTasksList.filter((_: any, i: any) => i !== index);
-      console.log('list ', list);
-      return list;
-    });
+    remove(index);
+
+    // setSubTasksList((subTasksList: string[]) => {
+    //   const list = subTasksList.filter((_: any, i: any) => i !== index);
+    //   console.log('list ', list);
+    //   return list;
+    // });
   };
 
   return (
@@ -93,27 +132,30 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
         <Typography>{isUpdate ? 'Edit Task' : 'Add New Task'}</Typography>
         <FormInput
           name="title"
+          register
           label="Title"
           control={control}
-          initialValue={isUpdate ? task.title : ''}
+          //initialValue={isUpdate ? task.title : ''}
         />
         <FormInput
+          register
           name="description"
           label="Description"
           control={control}
-          initialValue={isUpdate ? task.description : ''}
+          //initialValue={isUpdate ? task.description : ''}
         />
         <label>Subtasks</label>
-        {subTasksList !== null &&
-          subTasksList.length > 0 &&
-          subTasksList.map((subTask, index) => {
+        {fields !== null &&
+          fields.length > 0 &&
+          fields.map((subTask, index) => {
             return (
               <FormInput
-                initialValue={subTask}
-                name={`subTask-${index}`}
+                //initialValue={subTask}
+                name={`subTasks.${index}].title`}
+                register
                 label={''}
-                key={`subTask-${index}`}
                 control={control}
+                key={subTask.id}
               >
                 <Cross onClick={(event: any) => onCrossClick(index)} />
               </FormInput>
@@ -131,8 +173,9 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           items={columns.map((column) => column.name)}
           name={'status'}
           label={'Status'}
+          register
           control={control}
-          initialValue={task ? task.status : columns[0].name}
+          // initialValue={task ? task.status : columns[0].name}
         />
         <Button
           title={isUpdate ? 'Save Changes' : 'Create Task'}
