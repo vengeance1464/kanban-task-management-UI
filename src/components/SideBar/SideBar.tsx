@@ -10,6 +10,7 @@ import { SideBarProps } from './types';
 const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   onClick,
 }) => {
+  const [itemSelected, setItemSelected] = useState<number>(0);
   return (
     <Box
       sx={{
@@ -25,23 +26,29 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
     >
       {/* <Logo onClick={undefined} /> */}
       <Stack direction="column">
-        <SideBarItem title="Platform Launch" />
-        <SideBarItem title="Marketing Plan" />
-        <SideBarItem title="Roadmap " />
+        {['Platform Launch', 'Marketing Plan', 'Roadmap'].map((item, index) => (
+          <SideBarItem
+            onClick={() => setItemSelected(index)}
+            isItemSeleced={itemSelected === index}
+            title={item}
+          />
+        ))}
       </Stack>
-
-      <Stack></Stack>
       <Stack
         sx={{
           position: 'absolute',
           bottom: '2vh',
+          ':hover': {
+            backgroundColor: 'rgba(99, 95, 199, 0.10)',
+            borderRadius: '0px 100px 100px 0px',
+          },
+          width: '100%',
           // opacity: '0.1',
           // borderRadius: '0px 100px 100px 0px;',
           // backgroundColor: '#635FC7',
         }}
         direction="row"
-        justifyContent={'flex-start'}
-        alignItems="center"
+        alignItems={'center'}
       >
         <EyeDisabled onClick={onClick} />
         <Box>

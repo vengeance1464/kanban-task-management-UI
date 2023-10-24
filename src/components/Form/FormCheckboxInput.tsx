@@ -32,11 +32,8 @@ export const FormCheckboxInput: React.FC<
         <Typography
           sx={{
             fontSize: '1rem',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            opacity: 0.5,
+            opacity: !checked ? 1 : 0.5,
             color: (theme) => theme.palette.primary.dark,
-            lineHeight: 'normal',
           }}
         >
           {label}

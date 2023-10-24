@@ -35,8 +35,28 @@ const theme = createTheme({
       styleOverrides:{
         '@font-face':[plusJakartaSans]
       }
+    },
+    MuiTypography:{
+      styleOverrides:{
+        root:{
+        fontStyle: 'normal',
+        fontWeight: 700,
+        lineHeight: 'normal',
+        color:'#828FA3',
+       
+        }
+      }
+    },
+    MuiButton:{
+      styleOverrides:{
+        root:{
+          '&:hover': {
+            backgroundColor: '#A8A4FF',
+          },
+        }
     }
   },
+},
   typography: {
     fontFamily:  [
       'Plus Jakarta Sans',

@@ -12,27 +12,20 @@ const ButtonComponent: React.FC<ButtonProps> = ({
     <Button
       sx={{
         borderRadius: '20px',
-        background: '#635FC7',
+        background: (theme) => theme.palette.primary.main,
         width: '10vw',
         height: '36px',
         lineHeight: 'normal',
+        color: '#fff',
+        fontSize: '1.25rem',
+        textAlign: 'center',
+        textTransform: 'none',
         ...styles,
       }}
       variant={variant}
       onClick={onClick}
     >
-      <Typography
-        sx={{
-          fontSize: '1.25rem',
-          fontWeight: 700,
-          fontStyle: 'normal',
-          color: '#fff',
-          textAlign: 'center',
-          textTransform: 'none',
-        }}
-      >
-        {title}
-      </Typography>
+      {title}
     </Button>
   );
 };

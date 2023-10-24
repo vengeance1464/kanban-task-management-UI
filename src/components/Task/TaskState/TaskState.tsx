@@ -22,9 +22,6 @@ const TaskStateComponent: React.FC<ITaskStateProps> = ({
         <Typography
           sx={{
             fontSize: '1rem',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            lineHeight: 'normal',
             color: (theme) => theme.palette.grey[700],
             letterSpacing: '2.4px',
           }}
@@ -34,9 +31,6 @@ const TaskStateComponent: React.FC<ITaskStateProps> = ({
         <Typography
           sx={{
             fontSize: '1rem',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            lineHeight: 'normal',
             color: (theme) => theme.palette.grey[700],
             letterSpacing: '2.4px',
           }}

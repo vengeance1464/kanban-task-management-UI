@@ -1,7 +1,8 @@
 
 export type SideBarItemProps={
     title:string
-    
+    isItemSeleced:boolean
+    onClick:()=>void
 }
 
 

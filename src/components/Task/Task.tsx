@@ -36,8 +36,6 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
             sx={{
               fontSize: '1.25rem',
               color: (theme) => theme.palette.primary.dark,
-              fontWeight: 700,
-              lineHeight: 'normal',
             }}
           >
             {task.title}
@@ -45,8 +43,6 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
           <Typography
             sx={{
               fontSize: '1rem',
-              fontWeight: 700,
-              lineHeight: 'normal',
               color: (theme) => theme.palette.grey[700],
             }}
           >

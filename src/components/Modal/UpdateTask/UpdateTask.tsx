@@ -52,49 +52,54 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
         handleClose();
       }}
     >
-      <Stack direction="column" gap={1}>
+      <Stack direction="column" gap={2}>
         <Stack direction="row" justifyContent={'space-between'}>
           <Typography
             sx={{
               color: (theme) => theme.palette.primary.dark,
               fontSize: '1.5rem',
-              fontStyle: 'normal',
-              fontWeight: 700,
-              lineHeight: 'normal',
             }}
           >
             {task.title}
           </Typography>
           <More onClick={onMoreClick} />
         </Stack>
-        <Typography>{task.description}</Typography>
+        <Typography
+          sx={{
+            color: (theme) => theme.palette.grey[700],
+            fontSize: '1.1rem',
+            fontWeight: '500',
+            lineHeight: '23px',
+          }}
+        >
+          {task.description}
+        </Typography>
         <Typography
           sx={{
             fontSize: '1rem',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            lineHeight: 'normal',
             color: (theme) => theme.palette.grey[700],
           }}
         >
           Subtasks({getSubtasks(task)[1]} of {getSubtasks(task)[0]} )
         </Typography>
-        {task.subtasks &&
-          task.subtasks.length > 0 &&
-          task.subtasks.map((subtask, index) => (
-            <Box
-              sx={{
-                backgroundColor: (theme) => theme.palette.info.light,
-                borderRadius: '4px',
-              }}
-            >
-              <FormCheckboxInput
-                isChecked={subtask.isCompleted}
-                onClick={() => onSubtaskSelected(index)}
-                label={subtask.title}
-              />
-            </Box>
-          ))}
+        <Stack gap={1}>
+          {task.subtasks &&
+            task.subtasks.length > 0 &&
+            task.subtasks.map((subtask, index) => (
+              <Box
+                sx={{
+                  backgroundColor: (theme) => theme.palette.info.light,
+                  borderRadius: '4px',
+                }}
+              >
+                <FormCheckboxInput
+                  isChecked={subtask.isCompleted}
+                  onClick={() => onSubtaskSelected(index)}
+                  label={subtask.title}
+                />
+              </Box>
+            ))}
+        </Stack>
       </Stack>
       {menuOpen && (
         <Menu

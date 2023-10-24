@@ -30,9 +30,6 @@ export const HeaderComponent: React.FC<HeaderProps> = ({ setOpen }) => {
         <Typography
           sx={{
             fontSize: '2rem',
-            fontStyle: 'normal',
-            fontWeight: 700,
-            lineHeight: 'normal',
             color: (theme) => theme.palette.primary.dark,
           }}
           onClick={() => console.log('efew')}

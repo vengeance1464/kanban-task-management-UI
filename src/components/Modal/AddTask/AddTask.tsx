@@ -133,10 +133,7 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
         <Typography
           sx={{
             fontSize: '1.5rem',
-            fontStyle: 'normal',
-            fontWeight: 700,
             color: (theme) => theme.palette.primary.dark,
-            lineHeight: 'normal',
           }}
         >
           {isUpdate ? 'Edit Task' : 'Add New Task'}
@@ -197,8 +194,11 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           }}
           styles={{
             width: '100%',
-            color: (theme: any) => theme.palette.primary.main,
-            backgroundColor: (theme: any) => theme.palette.primary.light,
+            color: (theme: any) => `${theme.palette.primary.main} !important`,
+            backgroundColor: 'rgba(99, 95, 199, 0.10)',
+            ':hover': {
+              backgroundColor: 'rgba(99, 95, 199, 0.25)',
+            },
           }}
         />
         <FormDropdown
@@ -213,6 +213,9 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           title={isUpdate ? 'Save Changes' : 'Create Task'}
           variant={'contained'}
           onClick={handleSubmit(onSubmit)}
+          styles={{
+            width: '100%',
+          }}
         />
       </Stack>
     </BaseModal>
