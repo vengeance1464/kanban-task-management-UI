@@ -13,6 +13,7 @@ import { columnsSelector } from '../../redux/columns/selector';
 import { tasksSelector } from '../../redux/task/selectors';
 import { UpdateTask } from '../../components/Modal/UpdateTask';
 import { Delete } from '../../components/Modal/Delete';
+import { EyeEnabled } from '../../components/Icons/EyeEnabled';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   const columns = useSelector(columnsSelector);

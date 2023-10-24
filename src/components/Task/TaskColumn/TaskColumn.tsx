@@ -20,7 +20,7 @@ const TaskColumnComponent: React.FC<ITaskColumnProps> = ({
 
   return (
     <>
-      <Stack ref={ref} direction="column" gap={1}>
+      <Stack ref={ref} direction="column" gap={2}>
         {tasks.map((task, index) => (
           <Task task={task} />
         ))}

@@ -6,6 +6,7 @@ import { SubTask } from "../Task/types";
      label?:string
      initialValue?:SubTask
      register:any
+     inputSize?:InputSize
   }
 
   export type FormCheckboxProps={
@@ -17,3 +18,9 @@ import { SubTask } from "../Task/types";
   export type FormDropdownProps={
     items:string []
   } &   FormInputProps
+
+
+  export  enum InputSize{
+     NORMAL,
+     LARGE
+  }

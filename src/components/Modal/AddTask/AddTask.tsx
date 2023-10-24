@@ -1,4 +1,4 @@
-import { Dialog, Stack, Typography } from '@mui/material';
+import { Dialog, InputLabel, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import { Cross } from '../../Icons/Cross';
 import { BaseModal } from '../BaseModal';
 import { AddTaskProps } from '../types';
 import { mapAddTaskData } from './types';
+import { InputSize } from '../../Form/types';
 
 const AddTaskComponent: React.FC<AddTaskProps> = ({
   open,
@@ -129,7 +130,17 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
   return (
     <BaseModal open={open} handleClose={handleClose}>
       <Stack direction="column" gap={2}>
-        <Typography>{isUpdate ? 'Edit Task' : 'Add New Task'}</Typography>
+        <Typography
+          sx={{
+            fontSize: '1.5rem',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            color: (theme) => theme.palette.primary.dark,
+            lineHeight: 'normal',
+          }}
+        >
+          {isUpdate ? 'Edit Task' : 'Add New Task'}
+        </Typography>
         <FormInput
           name="title"
           register
@@ -142,9 +153,20 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           name="description"
           label="Description"
           control={control}
+          inputSize={InputSize.LARGE}
           //initialValue={isUpdate ? task.description : ''}
         />
-        <label>Subtasks</label>
+        <InputLabel
+          sx={{
+            fontSize: '1rem',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: 'normal',
+            color: (theme) => theme.palette.grey[700],
+          }}
+        >
+          SubTasks
+        </InputLabel>
         {fields !== null &&
           fields.length > 0 &&
           fields.map((subTask, index) => {
@@ -163,10 +185,20 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           })}
 
         <Button
-          title={'Add Sub Task'}
+          title={'+ Add Sub Task'}
           variant={'contained'}
           onClick={() => {
-            setSubTasksList([...subTasksList, '']);
+            append({
+              id: isUpdate ? task.subtasks.length + 1 : 1,
+              title: '',
+              isCompleted: false,
+            });
+            //setSubTasksList([...subTasksList, '']);
+          }}
+          styles={{
+            width: '100%',
+            color: (theme: any) => theme.palette.primary.main,
+            backgroundColor: (theme: any) => theme.palette.primary.light,
           }}
         />
         <FormDropdown

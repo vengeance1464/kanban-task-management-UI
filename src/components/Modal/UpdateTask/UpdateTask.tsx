@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateSubTask } from '../../../redux/task/taskSlice';
@@ -54,21 +54,46 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
     >
       <Stack direction="column" gap={1}>
         <Stack direction="row" justifyContent={'space-between'}>
-          <Typography>{task.title}</Typography>
+          <Typography
+            sx={{
+              color: (theme) => theme.palette.primary.dark,
+              fontSize: '1.5rem',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              lineHeight: 'normal',
+            }}
+          >
+            {task.title}
+          </Typography>
           <More onClick={onMoreClick} />
         </Stack>
         <Typography>{task.description}</Typography>
-        <Typography>
+        <Typography
+          sx={{
+            fontSize: '1rem',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: 'normal',
+            color: (theme) => theme.palette.grey[700],
+          }}
+        >
           Subtasks({getSubtasks(task)[1]} of {getSubtasks(task)[0]} )
         </Typography>
         {task.subtasks &&
           task.subtasks.length > 0 &&
           task.subtasks.map((subtask, index) => (
-            <FormCheckboxInput
-              isChecked={subtask.isCompleted}
-              onClick={() => onSubtaskSelected(index)}
-              label={subtask.title}
-            />
+            <Box
+              sx={{
+                backgroundColor: (theme) => theme.palette.info.light,
+                borderRadius: '4px',
+              }}
+            >
+              <FormCheckboxInput
+                isChecked={subtask.isCompleted}
+                onClick={() => onSubtaskSelected(index)}
+                label={subtask.title}
+              />
+            </Box>
           ))}
       </Stack>
       {menuOpen && (

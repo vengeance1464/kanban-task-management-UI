@@ -32,8 +32,24 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
         onClick={() => setUpdateTask(true)}
       >
         <Stack direction="column">
-          <Typography>{task.title}</Typography>
-          <Typography>
+          <Typography
+            sx={{
+              fontSize: '1.25rem',
+              color: (theme) => theme.palette.primary.dark,
+              fontWeight: 700,
+              lineHeight: 'normal',
+            }}
+          >
+            {task.title}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: '1rem',
+              fontWeight: 700,
+              lineHeight: 'normal',
+              color: (theme) => theme.palette.grey[700],
+            }}
+          >
             {task.subtasks.filter((subTask) => subTask.isCompleted).length} of{' '}
             {task.subtasks.length} subtasks
           </Typography>
