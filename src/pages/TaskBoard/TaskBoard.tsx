@@ -45,7 +45,6 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
     <>
       <Stack
         sx={{
-          backgroundColor: '#F4F7FD',
           maxHeight: '100vh',
           overflowY: 'scroll',
           '&::-webkit-scrollbar': {

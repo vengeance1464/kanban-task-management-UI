@@ -42,7 +42,8 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
                 multiline={inputSize === InputSize.LARGE}
                 rows={inputSize === InputSize.LARGE ? 4 : 1}
                 sx={{
-                  background: '#fff',
+                  background: (theme) =>
+                    theme.palette.otherColor.backgroundColor,
                   border: '1px solid rgba(130, 143, 163)',
                   borderRadius: '4px',
                 }}

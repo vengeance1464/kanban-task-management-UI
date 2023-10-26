@@ -10,7 +10,7 @@ export const HeaderComponent: React.FC<HeaderProps> = ({ setOpen }) => {
       sx={{
         display: 'fixed',
         top: '0',
-        background: 'white',
+        backgroundColor: (theme) => theme.palette.modalColor.backgroundColor,
         height: '10vh',
       }}
       direction="row"

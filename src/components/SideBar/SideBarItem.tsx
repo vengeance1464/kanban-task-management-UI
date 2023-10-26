@@ -3,7 +3,6 @@ import React, { PropsWithChildren, useState } from 'react';
 import { Board } from '../Icons/Board';
 import { SideBarItemProps } from './types';
 import { useTheme } from '@emotion/react';
-import { lightTheme } from '../../themes/lightTheme';
 
 const SideBarItem: React.FC<PropsWithChildren<SideBarItemProps>> = ({
   title,
@@ -25,7 +24,8 @@ const SideBarItem: React.FC<PropsWithChildren<SideBarItemProps>> = ({
       <Stack
         sx={{
           ':hover': {
-            backgroundColor: !isItemSeleced && 'rgba(99, 95, 199, 0.10)',
+            backgroundColor: (theme) =>
+              !isItemSeleced && theme.palette.otherColor.primaryLightColor,
           },
           borderRadius: '0px 100px 100px 0px',
           backgroundColor: (theme) =>

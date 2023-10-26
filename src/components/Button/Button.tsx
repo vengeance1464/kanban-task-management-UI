@@ -12,7 +12,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
     <Button
       sx={{
         borderRadius: '20px',
-        background: (theme) => theme.palette.primary.main,
+        background: (theme) => theme.palette.buttonColor.backgroundColor,
         width: '10vw',
         height: '36px',
         lineHeight: 'normal',

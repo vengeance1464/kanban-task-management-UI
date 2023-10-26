@@ -195,9 +195,11 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           styles={{
             width: '100%',
             color: (theme: any) => `${theme.palette.primary.main} !important`,
-            backgroundColor: 'rgba(99, 95, 199, 0.10)',
+            backgroundColor: (theme: any) =>
+              `${theme.palette.otherColor.secondaryColor} !important`,
             ':hover': {
-              backgroundColor: 'rgba(99, 95, 199, 0.25)',
+              backgroundColor: (theme: any) =>
+                `${theme.palette.otherColor.primaryLightColor} !important`,
             },
           }}
         />
