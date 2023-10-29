@@ -3,8 +3,18 @@ import { Box, Stack, Typography } from '@mui/material';
 import { HeaderProps } from './types';
 import { Button } from '../Button';
 import { Logo } from '../Icons/Logo';
+import { useDevice } from '../utils/hooks/useDevice';
+import { Plus } from '../Icons/Plus';
+import { MobileLogo } from '../Icons/MobileLogo';
+import { DownArrow } from '../Icons/DownArrow';
+import { UpArrow } from '../Icons/UpArrow';
 
-export const HeaderComponent: React.FC<HeaderProps> = ({ setOpen }) => {
+export const HeaderComponent: React.FC<HeaderProps> = ({
+  setOpen,
+  mobileSideBarVisible,
+  setMobileSideBarVisible,
+}) => {
+  const { isMobile } = useDevice();
   return (
     <Stack
       sx={{
@@ -23,10 +33,12 @@ export const HeaderComponent: React.FC<HeaderProps> = ({ setOpen }) => {
         alignItems="center"
         gap={2}
       >
-        <Logo onClick={null} />
-        <Box
-          sx={{ width: '1px', height: '10vh', backgroundColor: '#E4EBFA' }}
-        ></Box>
+        {isMobile ? <MobileLogo /> : <Logo onClick={null} />}
+        {!isMobile && (
+          <Box
+            sx={{ width: '1px', height: '10vh', backgroundColor: '#E4EBFA' }}
+          ></Box>
+        )}
         <Typography
           sx={{
             fontSize: '2rem',
@@ -36,15 +48,22 @@ export const HeaderComponent: React.FC<HeaderProps> = ({ setOpen }) => {
         >
           Platform Launch
         </Typography>
+        {isMobile &&
+          (!mobileSideBarVisible ? (
+            <DownArrow onClick={() => setMobileSideBarVisible(true)} />
+          ) : (
+            <UpArrow />
+          ))}
       </Stack>
       <Button
-        title="+ Add New Task"
         variant="contained"
         onClick={() => {
           console.log('open');
           setOpen(true);
         }}
-      />
+      >
+        {isMobile ? <Plus /> : '+ Add New Task'}
+      </Button>
     </Stack>
   );
 };

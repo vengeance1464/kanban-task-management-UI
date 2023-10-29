@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '../../Button';
 import { BaseModal } from '../BaseModal';
 import { DeleteProps } from '../types';
+import { useDevice } from '../../utils/hooks/useDevice';
 
 const DeleteComponent: React.FC<DeleteProps> = ({
   open,
@@ -12,6 +13,7 @@ const DeleteComponent: React.FC<DeleteProps> = ({
   title,
   description,
 }) => {
+  const { isMobile } = useDevice();
   return (
     <BaseModal open={open} handleClose={handleClose}>
       <Stack direction="column" justifyContent={'space-between'} gap={3}>
@@ -24,19 +26,32 @@ const DeleteComponent: React.FC<DeleteProps> = ({
           {title}
         </Typography>
         <Typography sx={{ fontSize: '1.2rem' }}>{description}</Typography>
-        <Stack direction="row" justifyContent={'center'} gap={1}>
+        <Stack
+          direction={isMobile ? 'column' : 'row'}
+          justifyContent={'center'}
+          gap={1}
+        >
           <Button
             styles={{
               backgroundColor: (theme: any) => theme.palette.secondary.main,
               ':hover': {
                 backgroundColor: (theme: any) => theme.palette.secondary.light,
               },
+              width: isMobile && '100%',
             }}
             title={'Delete'}
             variant={'text'}
             onClick={onDelete}
           />
-          <Button title={'Cancel'} variant={'text'} onClick={onCancel} />
+
+          <Button
+            styles={{
+              width: isMobile && '100%',
+            }}
+            title={'Cancel'}
+            variant={'text'}
+            onClick={onCancel}
+          />
         </Stack>
       </Stack>
     </BaseModal>

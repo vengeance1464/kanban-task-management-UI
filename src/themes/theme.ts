@@ -97,6 +97,15 @@ const theme = createMuiTheme({
       // ... other properties
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 640,   // custom value
+      md: 1024,  // custom value
+      lg: 1440,  // custom value
+      xl: 1920,
+    },
+  },
 });
 
 return theme

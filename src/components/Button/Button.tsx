@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
+import { PropsWithChildren } from '../../react-app-env';
 
-const ButtonComponent: React.FC<ButtonProps> = ({
+const ButtonComponent: React.FC<PropsWithChildren<ButtonProps>> = ({
   title,
   variant,
   onClick,
   styles,
+  children,
 }) => {
   return (
     <Button
@@ -25,7 +27,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
       variant={variant}
       onClick={onClick}
     >
-      {title}
+      {title && title != '' ? title : children}
     </Button>
   );
 };

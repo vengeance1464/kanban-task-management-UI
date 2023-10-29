@@ -1,5 +1,5 @@
 interface ButtonProps {
-  title: string;
+  title?: string;
   variant: "contained" | "text";
   onClick:(e?:any)=>void,
   styles?:any

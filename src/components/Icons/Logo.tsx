@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { PropsWithChildren } from '../../react-app-env';
 import { IconProps } from './types';
 import { Theme, ThemeContext, useTheme } from '@emotion/react';
+import { useDevice } from '../utils/hooks/useDevice';
 
 export const Logo: React.FC<PropsWithChildren<IconProps>> = ({
   onClick,

@@ -2,13 +2,16 @@ import React from 'react';
 import { Box, Dialog, Modal, useTheme } from '@mui/material';
 import { IBaseModalProps } from '../types';
 import { PropsWithChildren } from '../../../react-app-env';
+import { useDevice } from '../../utils/hooks/useDevice';
 
 const BaseModalComponent: React.FC<PropsWithChildren<IBaseModalProps>> = ({
   open,
   handleClose,
   children,
+  styles,
 }) => {
   const theme = useTheme();
+  const { isMobile } = useDevice();
   return (
     <Dialog
       open={open}
@@ -17,8 +20,9 @@ const BaseModalComponent: React.FC<PropsWithChildren<IBaseModalProps>> = ({
         style: {
           backgroundColor: theme.palette.modalColor.backgroundColor,
           boxShadow: 'none',
-          width: '50%',
+          width: isMobile ? '100%' : '50%',
           padding: '32px',
+          ...styles,
         },
       }}
     >

@@ -3,6 +3,7 @@ import { Task } from "../Task/types";
 export interface IBaseModalProps{
     open:boolean,
     handleClose:()=>void
+    styles?:any
 }
 
 

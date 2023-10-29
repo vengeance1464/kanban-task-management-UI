@@ -8,4 +8,6 @@ export type SideBarItemProps={
 
 export type SideBarProps={
     onClick:()=>void
+    mobileSideBarVisible:boolean
+    handleClose:()=>void
 }
