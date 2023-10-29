@@ -11,6 +11,7 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
   initialValue,
   register,
   inputSize,
+  disabled,
 }) => {
   console.log('initial,', initialValue);
   return (

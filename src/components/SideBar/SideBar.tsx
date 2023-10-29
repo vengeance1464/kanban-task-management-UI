@@ -14,6 +14,7 @@ import { Toggle } from '../Toggle';
 import { ThemeContext } from '../../themes/ThemeProvider';
 import { useDevice } from '../utils/hooks/useDevice';
 import { BaseModal } from '../Modal/BaseModal';
+import AddBoard from '../Modal/AddBoard/AddBoard';
 
 const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   onClick,
@@ -25,6 +26,12 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { theme: themeMode, setTheme } = useContext(ThemeContext);
   const { isMobile } = useDevice();
+
+  const [open, setOpen] = useState(false);
+
+  const handleBoardClose = () => {
+    setOpen(false);
+  };
 
   console.log('mobileSideBarVisible', mobileSideBarVisible);
   const getSideBar = () => {
@@ -42,7 +49,10 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
             ),
           )}
           <SideBarItem
-            onClick={() => setItemSelected(3)}
+            onClick={() => {
+              setItemSelected(3);
+              setOpen(true);
+            }}
             isItemSeleced={itemSelected === 3}
             title={'+ Create New Board'}
           />
@@ -111,6 +121,7 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
             </>
           )}
         </Stack>
+        {open && <AddBoard open={open} handleClose={handleBoardClose} />}
       </>
     );
   };
