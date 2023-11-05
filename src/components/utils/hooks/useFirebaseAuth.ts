@@ -43,10 +43,6 @@ export const useFirebaseAuth=()=>{
       console.log("set user",setUser)
       await setPersistence(auth, browserLocalPersistence);
 
-     // const token = credential.accessToken;
-     // setUser( result.user)
-
-      // The signed-in user info.
         }catch(error){
 
             const errorCode = error.code;
