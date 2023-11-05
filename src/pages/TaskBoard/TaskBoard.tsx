@@ -14,48 +14,50 @@ import { tasksSelector } from '../../redux/task/selectors';
 import { UpdateTask } from '../../components/Modal/UpdateTask';
 import { Delete } from '../../components/Modal/Delete';
 import { EyeEnabled } from '../../components/Icons/EyeEnabled';
+import { useDispatch } from 'react-redux';
+import { editTask } from '../../redux/task/taskSlice';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   const columns = useSelector(columnsSelector);
   const tasks = useSelector(tasksSelector);
 
+  const dispatch = useDispatch();
   console.log('Columns,', columns, 'tasks', tasks);
 
-  // const updateTaskColumn = (task: Task, updatedStatus: string) => {
-  //   let filteredColumnIndex: any = columns.findIndex(
-  //     (column) => column.name === task.status,
-  //   );
-
-  //   let filteredTasks = columns[filteredColumnIndex].tasks.filter(
-  //     (taskItem: any) => taskItem.title !== task.title,
-  //   );
-
-  //   columns[filteredColumnIndex].tasks = filteredTasks;
-  //   let finalColumnIndex: any = columns.findIndex(
-  //     (column) => column.name === updatedStatus,
-  //   );
-
-  //   task.status = updatedStatus;
-  //   columns[finalColumnIndex].tasks.push(task);
-  //   console.log('columns ', columns);
-  //   setColumns([...columns]);
-  // };
+  const updateTaskColumn = (task: Task, updatedStatus: string) => {
+    // let filteredColumnIndex: any = columns.findIndex(
+    //   (column) => column.name === task.status,
+    // );
+    // let filteredTasks = columns[filteredColumnIndex].tasks.filter(
+    //   (taskItem: any) => taskItem.title !== task.title,
+    // );
+    // columns[filteredColumnIndex].tasks = filteredTasks;
+    // let finalColumnIndex: any = columns.findIndex(
+    //   (column) => column.name === updatedStatus,
+    // );
+    // task.status = updatedStatus;
+    // columns[finalColumnIndex].tasks.push(task);
+    // console.log('columns ', columns);
+    // setColumns([...columns]);
+    //task.status = updatedStatus;
+    dispatch(editTask({ ...task, status: updatedStatus }));
+  };
 
   return (
     <>
       <Stack
         sx={{
           maxHeight: '100vh',
-          overflowY: 'scroll',
-          '&::-webkit-scrollbar': {
-            width: '0.4em',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          '&::-webkit-scrollbar-thumb:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          },
+          // overflowY: 'scroll',
+          // '&::-webkit-scrollbar': {
+          //   width: '0.4em',
+          // },
+          // '&::-webkit-scrollbar-thumb': {
+          //   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          // },
+          // '&::-webkit-scrollbar-thumb:hover': {
+          //   backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          // },
         }}
         direction="row"
         gap={3}
@@ -65,15 +67,19 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
             <Stack direction="column">
               <TaskState
                 taskState={column.name}
-                taskCount={tasks[column.name].length}
+                taskCount={
+                  !(column.name in tasks) ? 0 : tasks[column.name].length
+                }
                 color={'#49C4E5'}
               />
-              <DndProvider backend={HTML5Backend}>
-                <TaskColumn
-                  tasks={tasks[column.name]}
-                  updateTaskColumn={(): any => null}
-                />
-              </DndProvider>
+              {column.name in tasks && tasks[column.name].length > 0 && (
+                <DndProvider backend={HTML5Backend}>
+                  <TaskColumn
+                    tasks={tasks[column.name]}
+                    updateTaskColumn={updateTaskColumn}
+                  />
+                </DndProvider>
+              )}
             </Stack>
           );
         })}

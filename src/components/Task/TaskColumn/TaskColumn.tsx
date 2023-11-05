@@ -14,13 +14,20 @@ const TaskColumnComponent: React.FC<ITaskColumnProps> = ({
     accept: 'ITEM',
     drop: (item: any, monitor: any) => {
       console.log('Dropped item:', item);
-      let columnsCopy = updateTaskColumn(item, tasks[0].status);
+
+      if (tasks.length > 0) updateTaskColumn(item, tasks[0].status);
     },
   });
 
   return (
     <>
-      <Stack ref={ref} direction="column" gap={2}>
+      <Stack
+        sx={{ height: '100vh', width: '33vw', minWidth: '33vw' }}
+        flexGrow={1}
+        ref={ref}
+        direction="column"
+        gap={2}
+      >
         {tasks.map((task, index) => (
           <Task task={task} />
         ))}

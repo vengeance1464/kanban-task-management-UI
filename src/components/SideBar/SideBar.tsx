@@ -15,6 +15,8 @@ import { ThemeContext } from '../../themes/ThemeProvider';
 import { useDevice } from '../utils/hooks/useDevice';
 import { BaseModal } from '../Modal/BaseModal';
 import AddBoard from '../Modal/AddBoard/AddBoard';
+import { useSelector } from 'react-redux';
+import { boardsSelector } from '../../redux/board/selector';
 
 const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   onClick,
@@ -26,6 +28,7 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   const [isLightTheme, setIsLightTheme] = useState(false);
   const { theme: themeMode, setTheme } = useContext(ThemeContext);
   const { isMobile } = useDevice();
+  const boards = useSelector(boardsSelector);
 
   const [open, setOpen] = useState(false);
 
@@ -39,15 +42,13 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
       <>
         <Typography> All Boards</Typography>
         <Stack direction="column">
-          {['Platform Launch', 'Marketing Plan', 'Roadmap'].map(
-            (item, index) => (
-              <SideBarItem
-                onClick={() => setItemSelected(index)}
-                isItemSeleced={itemSelected === index}
-                title={item}
-              />
-            ),
-          )}
+          {boards.map((item, index) => (
+            <SideBarItem
+              onClick={() => setItemSelected(index)}
+              isItemSeleced={itemSelected === index}
+              title={item.name}
+            />
+          ))}
           <SideBarItem
             onClick={() => {
               setItemSelected(3);

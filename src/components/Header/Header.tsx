@@ -8,6 +8,7 @@ import { Plus } from '../Icons/Plus';
 import { MobileLogo } from '../Icons/MobileLogo';
 import { DownArrow } from '../Icons/DownArrow';
 import { UpArrow } from '../Icons/UpArrow';
+import { useFirebaseAuth } from '../utils/hooks/useFirebaseAuth';
 
 export const HeaderComponent: React.FC<HeaderProps> = ({
   setOpen,
@@ -15,6 +16,8 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
   setMobileSideBarVisible,
 }) => {
   const { isMobile } = useDevice();
+  const { user, signIn, signOut } = useFirebaseAuth();
+  console.log('user ', user);
   return (
     <Stack
       sx={{
@@ -55,6 +58,11 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
             <UpArrow />
           ))}
       </Stack>
+      <Button
+        variant="contained"
+        onClick={() => (user !== null && user ? signOut() : signIn())}
+        title={user && user !== null ? 'Sign Out' : 'Login'}
+      />
       <Button
         variant="contained"
         onClick={() => {

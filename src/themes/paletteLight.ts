@@ -1,4 +1,7 @@
  const paletteLight=  {
+  background:{
+      default:'#F4F7FD'
+  },
     primary: {
       main: "#635FC7",
       dark: "#000112",
