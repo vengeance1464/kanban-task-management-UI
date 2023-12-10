@@ -1,6 +1,4 @@
 import React, { createContext, useState } from 'react';
-import { firebaseConfig } from './firebaseConfig';
-import { initializeApp } from 'firebase/app';
 
 export const FirebaseContext = createContext<any>({
   app: null,

@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../../styles.css';
 import data from '../../data.json';
 import TaskState from '../../components/Task/TaskState/TaskState';
@@ -11,53 +11,45 @@ import { AddTask } from '../../components/Modal/AddTask';
 import { useSelector } from 'react-redux';
 import { columnsSelector } from '../../redux/columns/selector';
 import { tasksSelector } from '../../redux/task/selectors';
-import { UpdateTask } from '../../components/Modal/UpdateTask';
-import { Delete } from '../../components/Modal/Delete';
-import { EyeEnabled } from '../../components/Icons/EyeEnabled';
 import { useDispatch } from 'react-redux';
-import { editTask } from '../../redux/task/taskSlice';
+import { editTask, updateTasks } from '../../redux/task/taskSlice';
+import { currentBoardSelector } from '../../redux/currentBoard/selector';
+import { fetchUserTasksPayload } from '../../redux/task/payloads';
+import { FirebaseContext } from '../../components/utils/firebase/FirebaseProvider';
+import { axios } from '../../api';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   const columns = useSelector(columnsSelector);
   const tasks = useSelector(tasksSelector);
 
+  const currentBoard = useSelector(currentBoardSelector);
+
   const dispatch = useDispatch();
+  const { user } = useContext(FirebaseContext);
   console.log('Columns,', columns, 'tasks', tasks);
 
-  const updateTaskColumn = (task: Task, updatedStatus: string) => {
-    // let filteredColumnIndex: any = columns.findIndex(
-    //   (column) => column.name === task.status,
-    // );
-    // let filteredTasks = columns[filteredColumnIndex].tasks.filter(
-    //   (taskItem: any) => taskItem.title !== task.title,
-    // );
-    // columns[filteredColumnIndex].tasks = filteredTasks;
-    // let finalColumnIndex: any = columns.findIndex(
-    //   (column) => column.name === updatedStatus,
-    // );
-    // task.status = updatedStatus;
-    // columns[finalColumnIndex].tasks.push(task);
-    // console.log('columns ', columns);
-    // setColumns([...columns]);
-    //task.status = updatedStatus;
+  const updateTaskColumn = async (task: Task, updatedStatus: string) => {
+    const res = await axios.put('/tasks/update', {
+      ...task,
+      status: updatedStatus,
+    });
     dispatch(editTask({ ...task, status: updatedStatus }));
   };
+
+  useEffect(() => {
+    console.log('fetching ', currentBoard);
+    async function getAllTasks() {
+      dispatch(updateTasks(await fetchUserTasksPayload(currentBoard)));
+    }
+
+    if (user && user !== null) getAllTasks();
+  }, [currentBoard, user]);
 
   return (
     <>
       <Stack
         sx={{
           maxHeight: '100vh',
-          // overflowY: 'scroll',
-          // '&::-webkit-scrollbar': {
-          //   width: '0.4em',
-          // },
-          // '&::-webkit-scrollbar-thumb': {
-          //   backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          // },
-          // '&::-webkit-scrollbar-thumb:hover': {
-          //   backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          // },
         }}
         direction="row"
         gap={3}

@@ -3,15 +3,31 @@ import Button from '@mui/material/Button';
 import { ITaskProps } from './types';
 import { Box, Stack, Typography } from '@mui/material';
 import { useDrag } from 'react-dnd';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UpdateTask } from '../Modal/UpdateTask';
+import { axios } from '../../api';
 
 const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
   const [updateTask, setUpdateTask] = useState(false);
+  const [closed, setClosed] = useState(false);
 
   const handleClose = () => {
     setUpdateTask(false);
+    setClosed(true);
   };
+
+  const taskObject = useMemo(() => {
+    return JSON.stringify(task);
+  }, [closed]);
+
+  useEffect(() => {
+    async function updateSubTask() {
+      setClosed(false);
+      await axios.put('/tasks/update', JSON.parse(taskObject));
+    }
+
+    if (closed) updateSubTask();
+  }, [taskObject]);
 
   const [, ref] = useDrag({
     type: 'ITEM',

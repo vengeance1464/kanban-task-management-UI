@@ -4,11 +4,7 @@ import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { columnsSelector } from '../../../redux/columns/selector';
-import taskSlice, {
-  addTask,
-  deleteSubTask,
-  editTask,
-} from '../../../redux/task/taskSlice';
+import { addTask, editTask } from '../../../redux/task/taskSlice';
 import { Button } from '../../Button';
 import FormDropdown from '../../Form/FormDropdown';
 import FormInput from '../../Form/FormInput';
@@ -17,6 +13,9 @@ import { BaseModal } from '../BaseModal';
 import { AddTaskProps } from '../types';
 import { mapAddTaskData } from './types';
 import { InputSize } from '../../Form/types';
+import { allTasksSelector } from '../../../redux/task/selectors';
+import { axios } from '../../../api';
+import { currentBoardSelector } from '../../../redux/currentBoard/selector';
 
 const AddTaskComponent: React.FC<AddTaskProps> = ({
   open,
@@ -25,8 +24,7 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
   task,
 }) => {
   const columns = useSelector(columnsSelector);
-  console.log('Add task ', task);
-  //const [subTasks, setSubTasks] = useState(isUpdate ? task.subtasks.length : 1);
+  const tasks = useSelector(allTasksSelector);
   const { handleSubmit, reset, control, setValue, register } = useForm({
     defaultValues: {
       title: task ? task.title : '',
@@ -42,16 +40,8 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
     getValues,
   } = useForm();
 
-  //const { register, control: subTaskControl } = useForm();
-
-  // const watchedFields = useWatch({
-  //   control: subTaskControl,
-  //   names: dynamicNames,
-  // });
-
   const [subTasksList, setSubTasksList] = useState<string[]>(() => {
     if (task) {
-      console.log('setting SUbtasks');
       return task.subtasks.map((subTask) => subTask.title);
     } else {
       return [];
@@ -63,55 +53,24 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
     name: 'subTasks',
   });
 
-  // const [subTaskKeys, setSubTaskKeys] = useState(() => {
-  //   return subTasksList.map((_, index) => `subTask-${index}`);
-  // });
-
-  // const watchFields = watch(subTaskKeys);
-
-  console.log('subtasks', subTasksList);
-
   const dispatch = useDispatch();
 
-  // const getSubtasks = () => {
-  //   const subTasksList: React.JSX.Element[] = [];
-  //   for (let i = 0; i < subTasks; i++) {
-  //     subTasksList.push(
-  //       <FormInput
-  //         initialValue={
-  //           isUpdate && i < task.subtasks.length ? task.subtasks[i].title : ''
-  //         }
-  //         name={`subTask-${i}`}
-  //         label={''}
-  //         control={control}
-  //       >
-  //         <Cross
-  //           onClick={() => {
-  //             setSubTasks(subTasks.splice());
-  //           }}
-  //         />
-  //       </FormInput>,
-  //     );
-  //   }
-  //   return subTasksList;
-  // };
-  // useEffect(() => {
-  //   resetSubTasks(
-  //     task ? ({ subTasks: task.subtasks } as any) : { subTasks: [] },
-  //   );
-  // }, []);
+  const currentBoard = useSelector(currentBoardSelector);
 
-  const onSubmit = (data: any) => {
-    console.log('data ', data, getValues());
-    // console.log('watch ', watchFields);
+  const onSubmit = async (data: any) => {
     const mappedFormData = mapAddTaskData({
       ...data,
-      id: task.id,
+      id: isUpdate ? task.id : tasks.length + 1,
+      boardId: currentBoard,
       ...getValues(),
     });
-    console.log('mappedData', mappedFormData);
-    if (isUpdate) dispatch(editTask(mappedFormData));
-    else dispatch(addTask(mappedFormData));
+    if (isUpdate) {
+      const res = await axios.put('/tasks/update', mappedFormData);
+      dispatch(editTask(mappedFormData));
+    } else {
+      const res = await axios.post('/tasks/add', mappedFormData);
+      dispatch(addTask(mappedFormData));
+    }
     handleClose();
   };
 
@@ -119,12 +78,6 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
     console.log('list ');
 
     remove(index);
-
-    // setSubTasksList((subTasksList: string[]) => {
-    //   const list = subTasksList.filter((_: any, i: any) => i !== index);
-    //   console.log('list ', list);
-    //   return list;
-    // });
   };
 
   return (
@@ -138,20 +91,13 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
         >
           {isUpdate ? 'Edit Task' : 'Add New Task'}
         </Typography>
-        <FormInput
-          name="title"
-          register
-          label="Title"
-          control={control}
-          //initialValue={isUpdate ? task.title : ''}
-        />
+        <FormInput name="title" register label="Title" control={control} />
         <FormInput
           register
           name="description"
           label="Description"
           control={control}
           inputSize={InputSize.LARGE}
-          //initialValue={isUpdate ? task.description : ''}
         />
         <InputLabel
           sx={{
@@ -169,7 +115,6 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           fields.map((subTask, index) => {
             return (
               <FormInput
-                //initialValue={subTask}
                 name={`subTasks.${index}].title`}
                 register
                 label={''}
@@ -185,12 +130,12 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           title={'+ Add Sub Task'}
           variant={'contained'}
           onClick={() => {
-            append({
+            const subtask = {
               id: isUpdate ? task.subtasks.length + 1 : 1,
               title: '',
               isCompleted: false,
-            });
-            //setSubTasksList([...subTasksList, '']);
+            };
+            append(subtask);
           }}
           styles={{
             width: '100%',
@@ -209,7 +154,6 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           label={'Status'}
           register
           control={control}
-          // initialValue={task ? task.status : columns[0].name}
         />
         <Button
           title={isUpdate ? 'Save Changes' : 'Create Task'}

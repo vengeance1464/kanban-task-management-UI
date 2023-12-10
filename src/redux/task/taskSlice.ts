@@ -1,201 +1,210 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Task } from '../../components/Task/types';
 import { SubtaskActionType } from './types';
-
+import {axios} from "../../api"
 const  taskSlice = createSlice({
   name: 'tasks',
   initialState: [
-    {
-      id:1,
-      title: "Build UI for onboarding flow",
-      description: "",
-      status: "Todo",
-      subtasks: [
-        {
-          id:1,
-          title: "Sign up page",
-          isCompleted:  true
-        },
-        {
-          id:2,
-          title: "Sign in page",
-          isCompleted: false
-        },
-        {
-          id:3,
-          title: "Welcome page",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:2,
-      title: "Build UI for search",
-      description: "",
-      status: "Todo",
-      subtasks: [
-        {
-          id:1,
-          title: "Search page",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:3,
-      title: "Build settings UI",
-      description: "",
-      status: "Todo",
-      subtasks: [
-        {
-          id:1,
-          title: "Account page",
-          isCompleted: false
-        },
-        {
-          id:2,
-          title: "Billing page",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:4,
-      title: "QA and test all major user journeys",
-      description: "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
-      status: "Todo",
-      subtasks: [
-        {
-          id:1,
-          title: "Internal testing",
-          isCompleted: false
-        },
-        {
-          id:2,
-          title: "External testing",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:5,
-      title: "Design settings and search pages",
-      description: "",
-      status: "Doing",
-      subtasks: [
-        {
-          id:1,
-          title: "Settings - Account page",
-          isCompleted: true
-        },
-        {
-          id:2,
-          title: "Settings - Billing page",
-          isCompleted: true
-        },
-        {
-          id:3,
-          title: "Search page",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:6,
-      title: "Add account management endpoints",
-      description: "",
-      status: "Doing",
-      subtasks: [
-        {
-          id:1,
-          title: "Upgrade plan",
-          isCompleted: true
-        },
-        {
-          id:2,
-          title: "Cancel plan",
-          isCompleted: true
-        },
-        {
-          id:3,
-          title: "Update payment method",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:7,
-      title: "Design onboarding flow",
-    description: "",
-      status: "Doing",
-      subtasks: [
-        {
-          id:1,
-          title: "Sign up page",
-          isCompleted: true
-        },
-        {
-          id:2,
-          title: "Sign in page",
-          isCompleted: false
-        },
-        {
-          id:3,
-          title: "Welcome page",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:8,
-      title: "Add search enpoints",
-      description: "",
-      status: "Doing",
-      subtasks: [
-        {
-          id:1,
-          title: "Add search endpoint",
-          isCompleted: true
-        },
-        {
-          id:2,
-          title: "Define search filters",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:9,
-
-      title: "Add authentication endpoints",
-      description: "",
-      status: "Doing",
-      subtasks: [
-        {
-          id:1,
-          title: "Define user model",
-          isCompleted: true
-        },
-        {
-          id:2,
-          title: "Add auth endpoints",
-          isCompleted: false
-        }
-      ]
-    },
-    {
-      id:10,
-      title: "Conduct 5 wireframe tests",
-      description: "Ensure the layout continues to make sense and we have strong buy-in from potential users.",
-      status: "Done",
-      subtasks: [
-        {
-          id:1,
-          title: "Complete 5 wireframe prototype tests",
-          isCompleted: true
-        }
-      ]
-    },
+    // {
+    //   id:1,
+    //   title: "Build UI for onboarding flow",
+    //   description: "",
+    //   status: "Todo",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Sign up page",
+    //       isCompleted:  true
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Sign in page",
+    //       isCompleted: false
+    //     },
+    //     {
+    //       id:3,
+    //       title: "Welcome page",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:2,
+    //   title: "Build UI for search",
+    //   description: "",
+    //   status: "Todo",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Search page",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:3,
+    //   title: "Build settings UI",
+    //   description: "",
+    //   status: "Todo",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Account page",
+    //       isCompleted: false
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Billing page",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:4,
+    //   title: "QA and test all major user journeys",
+    //   description: "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
+    //   status: "Todo",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Internal testing",
+    //       isCompleted: false
+    //     },
+    //     {
+    //       id:2,
+    //       title: "External testing",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:5,
+    //   title: "Design settings and search pages",
+    //   description: "",
+    //   status: "Doing",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Settings - Account page",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Settings - Billing page",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:3,
+    //       title: "Search page",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:6,
+    //   title: "Add account management endpoints",
+    //   description: "",
+    //   status: "Doing",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Upgrade plan",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Cancel plan",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:3,
+    //       title: "Update payment method",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:7,
+    //   title: "Design onboarding flow",
+    // description: "",
+    //   status: "Doing",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Sign up page",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Sign in page",
+    //       isCompleted: false
+    //     },
+    //     {
+    //       id:3,
+    //       title: "Welcome page",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:8,
+    //   title: "Add search enpoints",
+    //   description: "",
+    //   status: "Doing",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Add search endpoint",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Define search filters",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:9,
+    //   boardId:1,
+    //   title: "Add authentication endpoints",
+    //   description: "",
+    //   status: "Doing",
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Define user model",
+    //       isCompleted: true
+    //     },
+    //     {
+    //       id:2,
+    //       title: "Add auth endpoints",
+    //       isCompleted: false
+    //     }
+    //   ]
+    // },
+    // {
+    //   id:10,
+    //   title: "Conduct 5 wireframe tests",
+    //   description: "Ensure the layout continues to make sense and we have strong buy-in from potential users.",
+    //   status: "Done",
+    //   boardId:1,
+    //   subtasks: [
+    //     {
+    //       id:1,
+    //       title: "Complete 5 wireframe prototype tests",
+    //       isCompleted: true
+    //     }
+    //   ]
+    // },
     // {
     //   "title": "Create wireframe prototype",
     //   "description": "Create a greyscale clickable wireframe prototype to test our asssumptions so far.",
@@ -311,7 +320,10 @@ const  taskSlice = createSlice({
 
          if(filteredTaskIndex!==-1)
         {
+            
             state[filteredTaskIndex].subtasks[action.payload.subTaskIndex].isCompleted= !state[filteredTaskIndex].subtasks[action.payload.subTaskIndex].isCompleted
+            //axios.post()
+
         }
 
         return state
@@ -325,8 +337,12 @@ const  taskSlice = createSlice({
 
       return state
    },
+   updateTasks:(state:any,action:PayloadAction<Task[]>)=>{
+    return [...action.payload]
+  
+  }
   }
 });
 
-export const { addTask,  editTask,deleteTask,updateSubTask,deleteSubTask} = taskSlice.actions;
+export const { addTask,  editTask,deleteTask,updateSubTask,deleteSubTask,updateTasks} = taskSlice.actions;
 export default taskSlice.reducer;

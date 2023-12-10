@@ -23,4 +23,6 @@ const fetchTasksByColumns=(tasks:Task[])=>{
 
 const tasksSelector=(state:RootState)=>fetchTasksByColumns(state.tasks)
 
-export {tasksSelector}
+const allTasksSelector=(state:RootState)=>state.tasks
+
+export {tasksSelector,allTasksSelector}

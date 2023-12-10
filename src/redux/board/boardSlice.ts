@@ -1,11 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Board } from './types';
+import {axios} from "../../api"
 
 const  boardSlice = createSlice({
   name: 'boards',
-  initialState: [{id:1, name: 'Platform Launch'}],
+   initialState: [
+  ],
   reducers: {
     addBoard: (state:any, action:PayloadAction<Board>) => {
+      axios.post('/board/add', action.payload);
        return [...state,action.payload]
     },
     editBoard:(state:any,action:any)=>{
@@ -16,9 +19,14 @@ const  boardSlice = createSlice({
       }
 
       return state
+    },
+
+    updateBoards:(state:any,action:PayloadAction<Board[]>)=>{
+      return [...action.payload]
+    
     }
   }
 });
 
-export const { addBoard,  editBoard} = boardSlice.actions;
+export const { addBoard,  editBoard,updateBoards} = boardSlice.actions;
 export default boardSlice.reducer;

@@ -11,7 +11,7 @@ import { BaseModal } from '../BaseModal';
 import { Delete } from '../Delete';
 import { UpdateTaskProps } from '../types';
 import { deleteTask } from '../../../redux/task/taskSlice';
-
+import { axios } from '../../../api';
 const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
   open,
   handleClose,
@@ -23,9 +23,7 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
   const [editTask, setEditTask] = useState(false);
   const [deleteCurrentTask, setDeleteCurrentTask] = useState(false);
 
-  // const taskRef = useRef({ ...task });
   const onSubtaskSelected = (index: number) => {
-    // let subtasks = { ...task.subtasks };
     dispatch(updateSubTask({ ...task, subTaskIndex: index }));
   };
   const getSubtasks = (task: Task) => {
@@ -125,7 +123,8 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
       )}
       {deleteCurrentTask && (
         <Delete
-          onDelete={() => {
+          onDelete={async () => {
+            await axios.delete('/tasks/delete', { id: task.id });
             dispatch(deleteTask(task));
             setDeleteCurrentTask(false);
           }}

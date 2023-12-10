@@ -23,6 +23,7 @@ console.log("data",data)
      task.description=data.description
      task.status=data.status
      task.subtasks=  data.subTasks
+     task.boardId=data.boardId
 
 
      return task

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BaseModal } from '../BaseModal';
 import { Stack, Typography } from '@mui/material';
 import FormInput from '../../Form/FormInput';
@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { boardsSelector } from '../../../redux/board/selector';
 import { useDispatch } from 'react-redux';
 import { addBoard } from '../../../redux/board/boardSlice';
+import { updateCurrentBoard } from '../../../redux/currentBoard/currentBoardSlice';
 
 const AddBoard: React.FC<IBaseModalProps> = ({ open, handleClose }) => {
   const { handleSubmit, reset, control, setValue, register } = useForm();
@@ -16,7 +17,13 @@ const AddBoard: React.FC<IBaseModalProps> = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const onSubmit = (data: any) => {
     console.log('data ', data);
-    dispatch(addBoard({ id: boards.length + 1, name: data.boardName }));
+    dispatch(
+      addBoard({
+        id: boards.length + 1,
+        name: data.boardName,
+      }),
+    );
+    dispatch(updateCurrentBoard(boards.length + 1));
     handleClose();
   };
 

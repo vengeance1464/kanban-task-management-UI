@@ -7,13 +7,14 @@ import { GoogleAuthProvider, getAuth,signInWithPopup,signOut as firebaseSignOut,
 export const useFirebaseAuth=()=>{
 
 
-    const {app,user,setUser}=useContext(FirebaseContext)
+    const {user,setUser}=useContext(FirebaseContext)
   
 
     useEffect(() => {
-        const unsubscribe = getAuth().onAuthStateChanged(user => {
+        const unsubscribe = getAuth().onAuthStateChanged( (user) => {
           if (user) {
             // User is signed in.
+            
             setUser(user);
           } else {
             // No user is signed in.
@@ -43,7 +44,7 @@ export const useFirebaseAuth=()=>{
       console.log("set user",setUser)
       await setPersistence(auth, browserLocalPersistence);
 
-        }catch(error){
+      }catch(error){
 
             const errorCode = error.code;
             const errorMessage = error.message;

@@ -13,6 +13,7 @@ export type Task = {
   description: string;
   status: string;
   subtasks: SubTask[];
+  boardId:number;
 };
 
 export interface ITaskColumnProps {

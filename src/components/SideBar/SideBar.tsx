@@ -17,6 +17,9 @@ import { BaseModal } from '../Modal/BaseModal';
 import AddBoard from '../Modal/AddBoard/AddBoard';
 import { useSelector } from 'react-redux';
 import { boardsSelector } from '../../redux/board/selector';
+import { useDispatch } from 'react-redux';
+
+import { updateCurrentBoard } from '../../redux/currentBoard/currentBoardSlice';
 
 const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   onClick,
@@ -29,6 +32,7 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   const { theme: themeMode, setTheme } = useContext(ThemeContext);
   const { isMobile } = useDevice();
   const boards = useSelector(boardsSelector);
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
 
@@ -36,19 +40,23 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
     setOpen(false);
   };
 
-  console.log('mobileSideBarVisible', mobileSideBarVisible);
   const getSideBar = () => {
     return (
       <>
         <Typography> All Boards</Typography>
         <Stack direction="column">
-          {boards.map((item, index) => (
-            <SideBarItem
-              onClick={() => setItemSelected(index)}
-              isItemSeleced={itemSelected === index}
-              title={item.name}
-            />
-          ))}
+          {boards &&
+            boards.length > 0 &&
+            boards.map((item, index) => (
+              <SideBarItem
+                onClick={() => {
+                  setItemSelected(index);
+                  dispatch(updateCurrentBoard(index + 1));
+                }}
+                isItemSeleced={itemSelected === index}
+                title={item.name}
+              />
+            ))}
           <SideBarItem
             onClick={() => {
               setItemSelected(3);
@@ -108,9 +116,6 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
             },
             width: '100%',
             marginLeft: '0.5vw',
-            // opacity: '0.1',
-            // borderRadius: '0px 100px 100px 0px;',
-            // backgroundColor: '#635FC7',
           }}
           direction="row"
           alignItems={'center'}
@@ -137,7 +142,6 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
         height: '90vh',
         width: '12vw',
         borderRight: '1px solid #E4EBFA',
-        // visibility: sideBarVisible ? 'visible' : 'hidden',
       }}
     >
       {getSideBar()}
