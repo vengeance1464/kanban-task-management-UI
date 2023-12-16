@@ -11,7 +11,7 @@ import FormInput from '../../Form/FormInput';
 import { Cross } from '../../Icons/Cross';
 import { BaseModal } from '../BaseModal';
 import { AddTaskProps } from '../types';
-import { mapAddTaskData } from './types';
+import { IFormData, mapAddTaskData } from './types';
 import { InputSize } from '../../Form/types';
 import { allTasksSelector } from '../../../redux/task/selectors';
 import { axios } from '../../../api';
@@ -25,11 +25,18 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
 }) => {
   const columns = useSelector(columnsSelector);
   const tasks = useSelector(allTasksSelector);
-  const { handleSubmit, reset, control, setValue, register } = useForm({
+  const {
+    handleSubmit,
+    reset,
+    control,
+    setValue,
+    register,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       title: task ? task.title : '',
       description: task ? task.description : '',
-      status: task ? task.status : '',
+      status: task ? task.status : 'Todo',
       subTasks: task ? task.subtasks : [],
     },
   });
@@ -75,13 +82,15 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
   };
 
   const onCrossClick = (index: number) => {
-    console.log('list ');
-
     remove(index);
   };
 
   return (
-    <BaseModal open={open} handleClose={handleClose}>
+    <BaseModal
+      styles={{ maxHeight: '75vh' }}
+      open={open}
+      handleClose={handleClose}
+    >
       <Stack direction="column" gap={2}>
         <Typography
           sx={{
@@ -91,12 +100,19 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
         >
           {isUpdate ? 'Edit Task' : 'Add New Task'}
         </Typography>
-        <FormInput name="title" register label="Title" control={control} />
+        <FormInput
+          name="title"
+          required
+          register
+          label="Title"
+          control={control}
+        />
         <FormInput
           register
           name="description"
           label="Description"
           control={control}
+          required
           inputSize={InputSize.LARGE}
         />
         <InputLabel
@@ -118,6 +134,7 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
                 name={`subTasks.${index}].title`}
                 register
                 label={''}
+                required
                 control={control}
                 key={subTask.id}
               >
@@ -152,6 +169,7 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
           items={columns.map((column) => column.name)}
           name={'status'}
           label={'Status'}
+          required
           register
           control={control}
         />

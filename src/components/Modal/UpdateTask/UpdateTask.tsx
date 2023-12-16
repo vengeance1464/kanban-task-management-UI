@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateSubTask } from '../../../redux/task/taskSlice';
 import { FormCheckboxInput } from '../../Form/FormCheckboxInput';
@@ -16,12 +16,12 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
   open,
   handleClose,
   task,
+  handleMenuItem,
 }) => {
-  console.log('Task ', task);
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [editTask, setEditTask] = useState(false);
-  const [deleteCurrentTask, setDeleteCurrentTask] = useState(false);
+  // const [editTask, setEditTask] = useState(false);
+  // const [deleteCurrentTask, setDeleteCurrentTask] = useState(false);
 
   const onSubtaskSelected = (index: number) => {
     dispatch(updateSubTask({ ...task, subTaskIndex: index }));
@@ -39,7 +39,6 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
   };
 
   const onMoreClick = () => {
-    console.log('on click ran');
     setMenuOpen(true);
   };
 
@@ -103,17 +102,11 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
         <Menu
           items={['Edit Task', 'Delete Task']}
           open={menuOpen}
-          handleItem={(index: number) => {
-            if (index === 0) {
-              setEditTask(true);
-            } else {
-              setDeleteCurrentTask(true);
-            }
-          }}
-          handleClose={undefined}
+          handleItem={handleMenuItem}
+          handleClose={() => setMenuOpen(false)}
         />
       )}
-      {editTask && (
+      {/* {editTask && (
         <AddTask
           open={editTask}
           isUpdate={true}
@@ -135,7 +128,7 @@ const UpdateTaskComponent: React.FC<UpdateTaskProps> = ({
           open={deleteCurrentTask}
           handleClose={() => setDeleteCurrentTask(false)}
         />
-      )}
+      )} */}
     </BaseModal>
   );
 };

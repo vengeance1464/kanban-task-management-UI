@@ -19,6 +19,7 @@ export type Task = {
 export interface ITaskColumnProps {
   tasks: Task[];
   updateTaskColumn: any;
+  status:string;
 }
 
 export interface ITaskStateProps {

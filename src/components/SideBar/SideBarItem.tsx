@@ -18,6 +18,7 @@ const SideBarItem: React.FC<PropsWithChildren<SideBarItemProps>> = ({
         if (!isItemSeleced) setSelected(true);
       }}
       onMouseLeave={() => {
+        if (selected) setSelected(false);
         if (!isItemSeleced) setSelected(false);
       }}
     >

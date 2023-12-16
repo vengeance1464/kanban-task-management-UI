@@ -8,6 +8,7 @@ import { SubTask } from "../Task/types";
      register:any
      inputSize?:InputSize
      disabled?:boolean
+     required?:boolean
   }
 
   export type FormCheckboxProps={

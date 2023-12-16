@@ -80,7 +80,7 @@ const theme = createMuiTheme({
           '&:hover': {
             backgroundColor: '#A8A4FF',
           },
-        }
+        } 
     }
   },
 },

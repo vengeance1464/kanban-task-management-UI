@@ -8,7 +8,6 @@ export const FirebaseContext = createContext<any>({
 
 const FirebaseProvider: React.FC<any> = ({ children }) => {
   const [user, setUser] = useState();
-  console.log('here');
   return (
     <FirebaseContext.Provider
       value={{ app: null, user: user, setUser: setUser }}

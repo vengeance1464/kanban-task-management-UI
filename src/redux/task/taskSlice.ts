@@ -297,7 +297,6 @@ const  taskSlice = createSlice({
        return [...state,action.payload]
     },
     editTask:(state:any,action:PayloadAction<Task>)=>{
-      console.log("edit",action.payload)
       const filteredTaskIndex=state.findIndex((task:any)=>task.id===action.payload.id)
       if(filteredTaskIndex!==-1)
       {

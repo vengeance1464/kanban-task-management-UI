@@ -34,14 +34,11 @@ export const useFirebaseAuth=()=>{
         const provider = new GoogleAuthProvider();
 
       const result=  await signInWithPopup(auth, provider)
-      console.log("result ",result)
 
       const additionalInfo=getAdditionalUserInfo(result)
-      console.log("additional ",additionalInfo)
 
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      console.log("credential ",credential);
-      console.log("set user",setUser)
+
       await setPersistence(auth, browserLocalPersistence);
 
       }catch(error){
@@ -58,7 +55,6 @@ export const useFirebaseAuth=()=>{
        const signOut=async()=>{
         try
         {
-            console.log("signing out")
         const auth = getAuth();
         const result= await firebaseSignOut(auth);
          setUser(null)

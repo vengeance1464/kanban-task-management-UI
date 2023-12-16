@@ -24,7 +24,6 @@ class AxiosService {
   private async handleRequest(config: InternalAxiosRequestConfig) {
     // Add auth token to headers
     const auth = getAuth(app);
-    console.log("current user ",auth.currentUser)
 
     if(auth.currentUser)
     {
@@ -57,7 +56,7 @@ class AxiosService {
   }
 
   public delete<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return this.instance.delete<T, R>(url, data);
+    return this.instance.delete<T, R>(url, {data:data});
   }
 
   // You can also add other methods like delete, patch, etc. here

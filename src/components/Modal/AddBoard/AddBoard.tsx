@@ -16,7 +16,6 @@ const AddBoard: React.FC<IBaseModalProps> = ({ open, handleClose }) => {
   const boards = useSelector(boardsSelector);
   const dispatch = useDispatch();
   const onSubmit = (data: any) => {
-    console.log('data ', data);
     dispatch(
       addBoard({
         id: boards.length + 1,

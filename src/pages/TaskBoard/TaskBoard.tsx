@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import '../../styles.css';
 import data from '../../data.json';
@@ -17,16 +17,19 @@ import { currentBoardSelector } from '../../redux/currentBoard/selector';
 import { fetchUserTasksPayload } from '../../redux/task/payloads';
 import { FirebaseContext } from '../../components/utils/firebase/FirebaseProvider';
 import { axios } from '../../api';
+import Button from '../../components/Button/Button';
+import { Plus } from '../../components/Icons/Plus';
+import { useDevice } from '../../components/utils/hooks/useDevice';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   const columns = useSelector(columnsSelector);
   const tasks = useSelector(tasksSelector);
+  const { isMobile } = useDevice();
 
   const currentBoard = useSelector(currentBoardSelector);
 
   const dispatch = useDispatch();
   const { user } = useContext(FirebaseContext);
-  console.log('Columns,', columns, 'tasks', tasks);
 
   const updateTaskColumn = async (task: Task, updatedStatus: string) => {
     const res = await axios.put('/tasks/update', {
@@ -37,7 +40,6 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   };
 
   useEffect(() => {
-    console.log('fetching ', currentBoard);
     async function getAllTasks() {
       dispatch(updateTasks(await fetchUserTasksPayload(currentBoard)));
     }
@@ -47,36 +49,58 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
 
   return (
     <>
-      <Stack
-        sx={{
-          maxHeight: '100vh',
-        }}
-        direction="row"
-        gap={3}
-      >
-        {columns.map((column, index) => {
-          return (
-            <Stack direction="column">
-              <TaskState
-                taskState={column.name}
-                taskCount={
-                  !(column.name in tasks) ? 0 : tasks[column.name].length
+      {user ? (
+        <Stack
+          sx={{
+            overflowX: isMobile ? 'scroll' : 'hidden',
+            overflowY: 'scroll',
+            maxHeight: '90vh',
+            height: '90vh',
+          }}
+          direction="row"
+          gap={3}
+        >
+          {columns.map((column, index) => {
+            return (
+              <Stack sx={{ width: '33vw', height: '100vh' }} direction="column">
+                <TaskState
+                  taskState={column.name}
+                  taskCount={
+                    !(column.name in tasks) ? 0 : tasks[column.name].length
+                  }
+                  color={'#49C4E5'}
+                />
+                {
+                  <DndProvider backend={HTML5Backend}>
+                    <TaskColumn
+                      tasks={column.name in tasks ? tasks[column.name] : null}
+                      status={column.name}
+                      updateTaskColumn={updateTaskColumn}
+                    />
+                  </DndProvider>
                 }
-                color={'#49C4E5'}
-              />
-              {column.name in tasks && tasks[column.name].length > 0 && (
-                <DndProvider backend={HTML5Backend}>
-                  <TaskColumn
-                    tasks={tasks[column.name]}
-                    updateTaskColumn={updateTaskColumn}
-                  />
-                </DndProvider>
-              )}
-            </Stack>
-          );
-        })}
-      </Stack>
-      {open && <AddTask open={open} handleClose={() => setOpen(false)} />}
+              </Stack>
+            );
+          })}
+        </Stack>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxHeight: '90vh',
+            height: '90vh',
+          }}
+        >
+          <Typography sx={{ fontSize: '18px' }}>
+            Please Create a Board to get Started
+          </Typography>
+        </Box>
+      )}
+      {user && open && (
+        <AddTask open={open} handleClose={() => setOpen(false)} />
+      )}
     </>
   );
 };

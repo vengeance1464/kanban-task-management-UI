@@ -12,8 +12,8 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
   register,
   inputSize,
   disabled,
+  required = false,
 }) => {
-  console.log('initial,', initialValue);
   return (
     <>
       <Stack direction="column">
@@ -33,19 +33,23 @@ const FormInput: React.FC<PropsWithChildren<FormInputProps>> = ({
         <Controller
           name={name}
           control={control}
+          rules={{
+            required: { value: true, message: 'Required' },
+          }}
           render={({ field, fieldState: { error }, formState }) => (
             <Stack direction="row" gap={2} alignItems="center">
               <TextField
-                helperText={error ? error.message : null}
+                helperText={error ? 'Required' : null}
                 size="small"
-                error={!!error}
+                error={error && error.message.length > 0}
+                required={required}
                 {...field}
                 multiline={inputSize === InputSize.LARGE}
                 rows={inputSize === InputSize.LARGE ? 4 : 1}
                 sx={{
                   background: (theme) =>
                     theme.palette.otherColor.backgroundColor,
-                  border: '1px solid rgba(130, 143, 163)',
+                  border: !error && '1px solid rgba(130, 143, 163)',
                   borderRadius: '4px',
                 }}
                 //onChange={onChange}

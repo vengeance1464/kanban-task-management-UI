@@ -6,10 +6,18 @@ import { useDrag } from 'react-dnd';
 import { useEffect, useMemo, useState } from 'react';
 import { UpdateTask } from '../Modal/UpdateTask';
 import { axios } from '../../api';
+import { AddTask } from '../Modal/AddTask';
+import { Delete } from '../Modal/Delete';
+import { deleteTask } from '../../redux/task/taskSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { currentBoardSelector } from '../../redux/currentBoard/selector';
 
 const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
   const [updateTask, setUpdateTask] = useState(false);
   const [closed, setClosed] = useState(false);
+  const [editTask, setEditTask] = useState(false);
+  const [deleteCurrentTask, setDeleteCurrentTask] = useState(false);
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setUpdateTask(false);
@@ -34,6 +42,15 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
     item: task, // a unique identifier for this type of draggable item
   });
 
+  const handleMenuItem = (index: number) => {
+    if (index === 0) {
+      //handleClose();
+      setEditTask(true);
+    } else {
+      setDeleteCurrentTask(true);
+    }
+    handleClose();
+  };
   return (
     <>
       <Box
@@ -68,7 +85,38 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
         </Stack>
       </Box>
       {updateTask && (
-        <UpdateTask open={updateTask} handleClose={handleClose} task={task} />
+        <UpdateTask
+          open={updateTask}
+          handleClose={handleClose}
+          handleMenuItem={handleMenuItem}
+          task={task}
+        />
+      )}
+      {editTask && (
+        <AddTask
+          open={editTask}
+          isUpdate={true}
+          handleClose={() => setEditTask(false)}
+          task={task}
+        />
+      )}
+      {deleteCurrentTask && (
+        <Delete
+          onDelete={async () => {
+            dispatch(deleteTask(task));
+            await axios.delete('/tasks/delete', {
+              id: task.id,
+              boardId: task.boardId,
+            });
+            setDeleteCurrentTask(false);
+          }}
+          onCancel={() => setDeleteCurrentTask(false)}
+          title={'Delete this task?'}
+          description={`Are you sure you want to delete the 
+            ‘${task.title}’ task and its subtasks? This action cannot be reversed.`}
+          open={deleteCurrentTask}
+          handleClose={() => setDeleteCurrentTask(false)}
+        />
       )}
     </>
   );

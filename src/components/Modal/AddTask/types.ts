@@ -1,22 +1,13 @@
 import { SubTask, Task } from "../../Task/types"
 
-// const filterSubtasks=(data:any)=>{
-//     let subTasks:SubTask[]=[]
-//     const filteredSubtasks=Object.keys(data).filter(key=>key.includes('subTask-'))
 
-//      if(filteredSubtasks.length>0)
-//      {
-//        subTasks= filteredSubtasks.map(subTask=>{return {
-//             title:subTask,
-//             isCompleted:false
-//         }})
-//      }
-
-//      return subTasks
-// }
+export interface IFormData{
+     title:string;
+     description:string;
+     status:string;
+}
 
 export const mapAddTaskData=(data:any):Task=>{
-console.log("data",data)
      let task={} as Task
      task.id=data.id
      task.title=data.title

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import Task from '../Task';
 import { ITaskColumnProps } from '../types';
 import { useDrag, useDrop } from 'react-dnd';
@@ -9,28 +9,47 @@ import { UpdateTask } from '../../Modal/UpdateTask';
 const TaskColumnComponent: React.FC<ITaskColumnProps> = ({
   tasks,
   updateTaskColumn,
+  status,
 }) => {
   const [, ref] = useDrop({
     accept: 'ITEM',
     drop: (item: any, monitor: any) => {
-      console.log('Dropped item:', item);
+      updateTaskColumn(item, status);
 
-      if (tasks.length > 0) updateTaskColumn(item, tasks[0].status);
+      //  if (tasks.length > 0) updateTaskColumn(item, tasks[0].status);
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
   });
 
   return (
     <>
       <Stack
-        sx={{ height: '100vh', width: '33vw', minWidth: '33vw' }}
+        sx={{
+          height: '100vh',
+          width: '33vw',
+          minWidth: '33vw',
+          minHeight: '100vh',
+        }}
         flexGrow={1}
         ref={ref}
         direction="column"
         gap={2}
       >
-        {tasks.map((task, index) => (
-          <Task task={task} />
-        ))}
+        {tasks !== null && tasks.length > 0 ? (
+          tasks.map((task, index) => <Task task={task} />)
+        ) : (
+          <Box
+            sx={{
+              height: '100vh',
+              width: '33vw',
+              minWidth: '33vw',
+              minHeight: '100vh',
+            }}
+          ></Box>
+        )}
       </Stack>
     </>
   );

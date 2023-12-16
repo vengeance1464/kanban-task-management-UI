@@ -15,6 +15,7 @@ export type AddTaskProps ={
 
 export type UpdateTaskProps={
      task:Task
+     handleMenuItem:(index:number)=>void
 } & IBaseModalProps
 
 

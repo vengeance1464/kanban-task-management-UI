@@ -14,6 +14,7 @@ import {FirebaseContext} from './components/utils/firebase/FirebaseProvider';
 import { fetchUserBoardsPayload } from './redux/board/payloads';
 import { useDispatch } from 'react-redux';
 import { updateBoards } from './redux/board/boardSlice';
+import { Profile } from './components/Modal/Profile';
 
 
 const App = () => {
@@ -27,7 +28,6 @@ const App = () => {
 
   const {user}=useContext(FirebaseContext)
 
-  console.log("theme",theme)
 
   const handleClose=()=>{
     setMobileSideBarVisible(false)
@@ -52,12 +52,12 @@ useEffect(() => {
 
      <>
       <Header setOpen={setOpen} mobileSideBarVisible={mobileSideBarVisible} setMobileSideBarVisible={setMobileSideBarVisible} />
-      <Box sx={{position:sideBarVisible && 'relative',left: !isMobile && sideBarVisible && '12vw',paddingLeft:'2vw', backgroundColor: theme=>theme.palette.info.light,
-          height: '100vh',maxHeight:'100vh'}}>
+      <Box sx={{position:sideBarVisible && 'relative',left: !isMobile && sideBarVisible && '12vw',paddingLeft:'2vw', backgroundColor: theme=>theme.palette.info.light}}>
       <TaskBoard open={open}  setOpen={setOpen}/>
       </Box>
-      {(sideBarVisible|| mobileSideBarVisible) && <SideBar onClick={()=>setSideBarVisible(false)} mobileSideBarVisible={mobileSideBarVisible} handleClose={handleClose}/>}
-      {!isMobile && !sideBarVisible && <EyeEnabled onClick={()=>setSideBarVisible(true)} />}
+      {user && (sideBarVisible|| mobileSideBarVisible) && <SideBar onClick={()=>setSideBarVisible(false)} mobileSideBarVisible={mobileSideBarVisible} handleClose={handleClose}/>}
+      {user && !isMobile && !sideBarVisible && <EyeEnabled onClick={()=>setSideBarVisible(true)} />}
+     
       </>
   );
 };

@@ -29,10 +29,14 @@ const FormDropdown: React.FC<PropsWithChildren<FormDropdownProps>> = ({
         <Controller
           name={name}
           control={control}
-          render={({ field }) => (
+          rules={{
+            required: { value: true, message: 'Required' },
+          }}
+          render={({ field, fieldState: { error }, formState }) => (
             <Select
               labelId="demo-simple-select-outlined-label"
               label=""
+              error={error && error.message.length > 0}
               defaultValue={initialValue ? initialValue : ''}
               {...field}
             >

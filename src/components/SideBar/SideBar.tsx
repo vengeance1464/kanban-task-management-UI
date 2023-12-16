@@ -1,13 +1,10 @@
 import { Box, Stack, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { PropsWithChildren } from '../../react-app-env';
 import { EyeDisabled } from '../Icons/EyeDisabled';
-import { Logo } from '../Icons/Logo';
 import SideBarItem from './SideBarItem';
 import { SideBarProps } from './types';
-import { DarkTheme } from '../Icons/DarkTheme';
-import { LightTheme } from '../Icons/LightTheme';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { Toggle } from '../Toggle';
@@ -18,7 +15,6 @@ import AddBoard from '../Modal/AddBoard/AddBoard';
 import { useSelector } from 'react-redux';
 import { boardsSelector } from '../../redux/board/selector';
 import { useDispatch } from 'react-redux';
-
 import { updateCurrentBoard } from '../../redux/currentBoard/currentBoardSlice';
 
 const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
@@ -33,22 +29,58 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   const { isMobile } = useDevice();
   const boards = useSelector(boardsSelector);
   const dispatch = useDispatch();
-
+  const firstRender = useRef(false);
   const [open, setOpen] = useState(false);
 
   const handleBoardClose = () => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (firstRender.current) {
+      setItemSelected(boards.length - 1);
+    } else {
+      firstRender.current = true;
+    }
+  }, [boards.length]);
   const getSideBar = () => {
     return (
       <>
-        <Typography> All Boards</Typography>
-        <Stack direction="column">
+        <Typography
+          sx={{
+            marginLeft: '0.5vw',
+            textTransform: 'capitalize',
+            marginBottom: '2vh',
+          }}
+        >
+          {' '}
+          {`All Boards (${boards.length})`}
+        </Typography>
+        <Stack
+          sx={{
+            overflowY: 'scroll',
+            maxHeight: '70%',
+            overflowX: 'hidden',
+            '&::-webkit-scrollbar': {
+              width: '6px', // Adjust the width as needed
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: '#f1f1f1', // Adjust track color as needed
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#888', // Adjust thumb color as needed
+              '&:hover': {
+                backgroundColor: '#555', // Adjust thumb hover color as needed
+              },
+            },
+          }}
+          direction="column"
+        >
           {boards &&
             boards.length > 0 &&
             boards.map((item, index) => (
               <SideBarItem
+                key={index}
                 onClick={() => {
                   setItemSelected(index);
                   dispatch(updateCurrentBoard(index + 1));
@@ -57,15 +89,15 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
                 title={item.name}
               />
             ))}
-          <SideBarItem
-            onClick={() => {
-              setItemSelected(3);
-              setOpen(true);
-            }}
-            isItemSeleced={itemSelected === 3}
-            title={'+ Create New Board'}
-          />
         </Stack>
+        <SideBarItem
+          onClick={() => {
+            setItemSelected(boards.length + 1);
+            setOpen(true);
+          }}
+          isItemSeleced={itemSelected === boards.length + 1}
+          title={'+ Create New Board'}
+        />
         <Box
           sx={{
             display: 'flex',
@@ -81,7 +113,7 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
               backgroundColor: (theme) => theme.palette.info.light,
               borderRadius: '6px',
               position: 'absolute',
-              bottom: '8vh',
+              bottom: isMobile ? '4vh' : '8vh',
             }}
             alignItems={'center'}
           >
@@ -140,7 +172,7 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
         top: '10vh',
         backgroundColor: (theme) => theme.palette.modalColor.backgroundColor,
         height: '90vh',
-        width: '12vw',
+        width: '12.1vw',
         borderRight: '1px solid #E4EBFA',
       }}
     >
@@ -151,8 +183,8 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
       open={mobileSideBarVisible}
       handleClose={handleClose}
       styles={{
-        width: '45vw',
-        height: '30vh',
+        width: '75vw',
+        height: '70vh',
         padding: '10px 18px 10px 18px',
       }}
     >
