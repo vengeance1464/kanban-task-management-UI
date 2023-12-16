@@ -68,7 +68,7 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
                   taskCount={
                     !(column.name in tasks) ? 0 : tasks[column.name].length
                   }
-                  color={'#49C4E5'}
+                  color={column.color ? column.color : '#67E2AE'}
                 />
                 {
                   <DndProvider backend={HTML5Backend}>
