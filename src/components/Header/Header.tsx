@@ -85,7 +85,7 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
           >
             <Button
               variant="contained"
-              styles={{ width: '3vw', height: '4vh' }}
+              styles={isMobile ? { width: '3vw', height: '4vh' } : {}}
               onClick={() => {
                 setOpen(true);
               }}
@@ -95,8 +95,8 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
             <Avatar
               onClick={() => setProfileOpen(true)}
               sx={{
-                width: '9vw',
-                height: '9vw',
+                width: isMobile ? '9vw' : '40px',
+                height: isMobile ? '9vw' : '40px',
               }}
               src={user.photoURL}
             />

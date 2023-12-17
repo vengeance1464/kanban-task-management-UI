@@ -8,7 +8,7 @@ export const Plus: React.FC<PropsWithChildren<IconProps>> = ({
   fillColor,
 }) => {
   return (
-    <IconButton onClick={onClick}>
+    <IconButton sx={{}} onClick={onClick}>
       <svg
         width="12"
         height="12"
