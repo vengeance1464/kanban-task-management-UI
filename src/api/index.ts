@@ -7,7 +7,7 @@ class AxiosService {
 
   constructor() {
     this.instance = axios.create({
-      baseURL: 'http://localhost:3001', // Replace with your API base URL
+      baseURL: process.env.REACT_APP_BASE_API_URL, // Replace with your API base URL
       // Additional default settings can be added here
     });
 

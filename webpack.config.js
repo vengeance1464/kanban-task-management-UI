@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
 
 module.exports = {
   output: {
@@ -12,6 +13,9 @@ module.exports = {
       inject: false,
       template: path.resolve(__dirname, "./src/index.html"),
     }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+    })
   ],
   devServer: {
     port: 3000, // you can change the port

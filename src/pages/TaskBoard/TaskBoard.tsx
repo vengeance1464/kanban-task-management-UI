@@ -17,8 +17,6 @@ import { currentBoardSelector } from '../../redux/currentBoard/selector';
 import { fetchUserTasksPayload } from '../../redux/task/payloads';
 import { FirebaseContext } from '../../components/utils/firebase/FirebaseProvider';
 import { axios } from '../../api';
-import Button from '../../components/Button/Button';
-import { Plus } from '../../components/Icons/Plus';
 import { useDevice } from '../../components/utils/hooks/useDevice';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
