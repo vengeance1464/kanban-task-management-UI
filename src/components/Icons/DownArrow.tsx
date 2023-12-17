@@ -7,7 +7,7 @@ export const DownArrow: React.FC<PropsWithChildren<IconProps>> = ({
   onClick,
 }) => {
   return (
-    <IconButton onClick={onClick}>
+    <IconButton sx={{ paddingLeft: 0 }} onClick={onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="9"

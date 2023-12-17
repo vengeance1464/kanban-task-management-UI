@@ -18,11 +18,13 @@ import { fetchUserTasksPayload } from '../../redux/task/payloads';
 import { FirebaseContext } from '../../components/utils/firebase/FirebaseProvider';
 import { axios } from '../../api';
 import { useDevice } from '../../components/utils/hooks/useDevice';
+import { boardsSelector } from '../../redux/board/selector';
 
 const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   const columns = useSelector(columnsSelector);
   const tasks = useSelector(tasksSelector);
   const { isMobile } = useDevice();
+  const boards = useSelector(boardsSelector);
 
   const currentBoard = useSelector(currentBoardSelector);
 
@@ -48,39 +50,44 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
   return (
     <>
       {user ? (
-        <Stack
-          sx={{
-            overflowX: isMobile ? 'scroll' : 'hidden',
-            overflowY: 'scroll',
-            maxHeight: '90vh',
-            height: '90vh',
-          }}
-          direction="row"
-          gap={3}
-        >
-          {columns.map((column, index) => {
-            return (
-              <Stack sx={{ width: '33vw', height: '100vh' }} direction="column">
-                <TaskState
-                  taskState={column.name}
-                  taskCount={
-                    !(column.name in tasks) ? 0 : tasks[column.name].length
+        <>
+          <Stack
+            sx={{
+              overflowX: isMobile ? 'scroll' : 'hidden',
+              overflowY: 'scroll',
+              maxHeight: '90vh',
+              height: '90vh',
+            }}
+            direction="row"
+            gap={3}
+          >
+            {columns.map((column, index) => {
+              return (
+                <Stack
+                  sx={{ width: isMobile ? '75vw' : '33vw', height: '100vh' }}
+                  direction="column"
+                >
+                  <TaskState
+                    taskState={column.name}
+                    taskCount={
+                      !(column.name in tasks) ? 0 : tasks[column.name].length
+                    }
+                    color={column.color ? column.color : '#67E2AE'}
+                  />
+                  {
+                    <DndProvider backend={HTML5Backend}>
+                      <TaskColumn
+                        tasks={column.name in tasks ? tasks[column.name] : null}
+                        status={column.name}
+                        updateTaskColumn={updateTaskColumn}
+                      />
+                    </DndProvider>
                   }
-                  color={column.color ? column.color : '#67E2AE'}
-                />
-                {
-                  <DndProvider backend={HTML5Backend}>
-                    <TaskColumn
-                      tasks={column.name in tasks ? tasks[column.name] : null}
-                      status={column.name}
-                      updateTaskColumn={updateTaskColumn}
-                    />
-                  </DndProvider>
-                }
-              </Stack>
-            );
-          })}
-        </Stack>
+                </Stack>
+              );
+            })}
+          </Stack>
+        </>
       ) : (
         <Box
           sx={{
@@ -92,7 +99,7 @@ const TaskBoard: React.FC = ({ open, setOpen }: any) => {
           }}
         >
           <Typography sx={{ fontSize: '18px' }}>
-            Please Create a Board to get Started
+            Please Login and Create a Board to get Started
           </Typography>
         </Box>
       )}

@@ -15,6 +15,7 @@ export const MobileLogo: React.FC<PropsWithChildren<IconProps>> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingRight: 0,
       }}
       onClick={onClick}
     >

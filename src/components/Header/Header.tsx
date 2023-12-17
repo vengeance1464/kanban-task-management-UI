@@ -50,23 +50,22 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
               sx={{ width: '1px', height: '10vh', backgroundColor: '#E4EBFA' }}
             ></Box>
           )}
-          {user && boards && boards.length > 0 && (
-            <>
-              <Typography
-                sx={{
-                  fontSize: '2rem',
-                  color: (theme) => theme.palette.primary.dark,
-                }}
-              >
-                {boards[currentBoard - 1].name}
-              </Typography>
-            </>
-          )}
+
+          <Typography
+            sx={{
+              fontSize: '2rem',
+              color: (theme) => theme.palette.primary.dark,
+            }}
+          >
+            {boards.length > 0 && user
+              ? boards[currentBoard - 1].name
+              : 'Kanban'}
+          </Typography>
           {isMobile &&
             (!mobileSideBarVisible ? (
               <DownArrow onClick={() => setMobileSideBarVisible(true)} />
             ) : (
-              <UpArrow />
+              <UpArrow onClick={() => setMobileSideBarVisible(false)} />
             ))}
         </Stack>
         {!user ? (
@@ -81,10 +80,12 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
             direction="row"
             alignItems={'center'}
             gap={1}
+            sx={{ paddingRight: '10px' }}
             justifyContent={'space-around'}
           >
             <Button
               variant="contained"
+              styles={{ width: '3vw', height: '4vh' }}
               onClick={() => {
                 setOpen(true);
               }}
@@ -93,7 +94,10 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
             </Button>
             <Avatar
               onClick={() => setProfileOpen(true)}
-              sx={{ width: '50px', height: '50px', marginRight: '10px' }}
+              sx={{
+                width: '9vw',
+                height: '9vw',
+              }}
               src={user.photoURL}
             />
           </Stack>
