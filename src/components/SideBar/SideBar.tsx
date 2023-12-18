@@ -29,20 +29,12 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   const { isMobile } = useDevice();
   const boards = useSelector(boardsSelector);
   const dispatch = useDispatch();
-  const firstRender = useRef(false);
   const [open, setOpen] = useState(false);
 
   const handleBoardClose = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    if (firstRender.current) {
-      setItemSelected(boards.length - 1);
-    } else {
-      firstRender.current = true;
-    }
-  }, [boards.length]);
   const getSideBar = () => {
     return (
       <>

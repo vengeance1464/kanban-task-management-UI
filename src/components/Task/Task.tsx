@@ -60,7 +60,7 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
           boxShadow: '0px 4px 6px 0px rgba(54, 78, 126, 0.10)',
           borderRadius: '8px',
           width: 'fit-content',
-          padding: '1.1vw',
+          padding: '1.5vw',
         }}
         onClick={() => setUpdateTask(true)}
       >
@@ -77,6 +77,7 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
             sx={{
               fontSize: '1rem',
               color: (theme) => theme.palette.grey[700],
+              marginTop: '5px',
             }}
           >
             {task.subtasks.filter((subTask) => subTask.isCompleted).length} of{' '}

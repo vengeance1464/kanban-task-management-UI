@@ -19,7 +19,7 @@ import { Profile } from './components/Modal/Profile';
 
 const App = () => {
   const [open, setOpen] = useState(false);
-  const [sideBarVisible, setSideBarVisible] = useState(false);
+  const [sideBarVisible, setSideBarVisible] = useState(true);
   const [theme,setTheme]=useState('light')
   const {isMobile}=useDevice()
   const dispatch=useDispatch()
@@ -52,10 +52,10 @@ useEffect(() => {
 
      <>
       <Header setOpen={setOpen} mobileSideBarVisible={mobileSideBarVisible} setMobileSideBarVisible={setMobileSideBarVisible} />
-      <Box sx={{position:sideBarVisible && 'relative',left: !isMobile && sideBarVisible && '12vw',paddingLeft:'2vw', backgroundColor: theme=>theme.palette.info.light}}>
+      <Box sx={{position:sideBarVisible && 'relative',left: !isMobile && sideBarVisible && user && '12vw',paddingLeft:user && '2vw', backgroundColor: theme=>theme.palette.info.light}}>
       <TaskBoard open={open}  setOpen={setOpen}/>
       </Box>
-      {user && (sideBarVisible|| mobileSideBarVisible) && <SideBar onClick={()=>setSideBarVisible(false)} mobileSideBarVisible={mobileSideBarVisible} handleClose={handleClose}/>}
+      {user && (sideBarVisible|| isMobile && mobileSideBarVisible) && <SideBar onClick={()=>setSideBarVisible(false)} mobileSideBarVisible={mobileSideBarVisible} handleClose={handleClose}/>}
       {user && !isMobile && !sideBarVisible && <EyeEnabled onClick={()=>setSideBarVisible(true)} />}
      
       </>

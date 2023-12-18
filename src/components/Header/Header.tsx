@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import { HeaderProps } from './types';
 import { Button } from '../Button';
 import { Logo } from '../Icons/Logo';
@@ -13,6 +14,10 @@ import { useSelector } from 'react-redux';
 import { boardsSelector } from '../../redux/board/selector';
 import { currentBoardSelector } from '../../redux/currentBoard/selector';
 import { Profile } from '../Modal/Profile';
+import { useDispatch } from 'react-redux';
+import { updateBoards } from '../../redux/board/boardSlice';
+import { updateTasks } from '../../redux/task/taskSlice';
+import { updateCurrentBoard } from '../../redux/currentBoard/currentBoardSlice';
 
 export const HeaderComponent: React.FC<HeaderProps> = ({
   setOpen,
@@ -24,6 +29,15 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
   const boards = useSelector(boardsSelector);
   const currentBoard = useSelector(currentBoardSelector);
   const [profileOpen, setProfileOpen] = React.useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(updateBoards([]));
+      dispatch(updateTasks([]));
+      dispatch(updateCurrentBoard(1));
+    }
+  }, [user]);
   return (
     <>
       <Stack
@@ -57,9 +71,11 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
               color: (theme) => theme.palette.primary.dark,
             }}
           >
-            {boards.length > 0 && user
+            {boards.length > 0 && currentBoard > 0
               ? boards[currentBoard - 1].name
-              : 'Kanban'}
+              : !user && isMobile
+              ? 'Kanban'
+              : ''}
           </Typography>
           {isMobile &&
             (!mobileSideBarVisible ? (
@@ -72,7 +88,15 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
           <Button
             variant="contained"
             styles={{ marginRight: '0.5vw' }}
-            onClick={() => (user !== null && user ? signOut() : signIn())}
+            onClick={() => {
+              if (user !== null && user) {
+                // window.location.reload();
+                //dispatch(updateCurrentBoard(0));
+                signOut();
+              } else {
+                signIn();
+              }
+            }}
             title={user && user !== null ? 'Sign Out' : 'Login'}
           />
         ) : (
@@ -83,15 +107,17 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
             sx={{ paddingRight: '10px' }}
             justifyContent={'space-around'}
           >
-            <Button
-              variant="contained"
-              styles={isMobile ? { width: '3vw', height: '4vh' } : {}}
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              {isMobile ? <Plus /> : '+ Add New Task'}
-            </Button>
+            {boards.length > 0 && (
+              <Button
+                variant="contained"
+                styles={isMobile ? { width: '3vw', height: '4vh' } : {}}
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                {isMobile ? <Plus /> : '+ Add New Task'}
+              </Button>
+            )}
             <Avatar
               onClick={() => setProfileOpen(true)}
               sx={{
