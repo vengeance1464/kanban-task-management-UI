@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "env-cmd -f .env webpack serve --mode development",
-    "dev": "env-cmd -f .env.development webpack serve --mode development",
+    "dev": "env-cmd -f .env.dev webpack serve --mode development",
     "build": "env-cmd -f .env.prod webpack --mode production",
     "lint": "eslint ./src",
     "format": "prettier --write src/**/*.{js,jsx}",
@@ -24,7 +24,9 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@types/react-redux": "^7.1.27",
     "axios": "^1.6.1",
+    "chart.js": "^4.4.1",
     "firebase": "^10.5.2",
+    "react-chartjs-2": "^5.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-hook-form": "^7.47.0",

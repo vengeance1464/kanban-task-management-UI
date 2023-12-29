@@ -15,6 +15,7 @@ import { fetchUserBoardsPayload } from './redux/board/payloads';
 import { useDispatch } from 'react-redux';
 import { updateBoards } from './redux/board/boardSlice';
 import { Profile } from './components/Modal/Profile';
+import { AnalyticsModal } from './components/Modal/Analytics';
 
 
 const App = () => {
