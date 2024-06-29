@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosR
 import { getAuth } from 'firebase/auth';
 import app from '../components/utils/firebase/firebaseConfig';
 
-class AxiosService {
+export default class AxiosService {
   private instance: AxiosInstance;
 
   constructor() {

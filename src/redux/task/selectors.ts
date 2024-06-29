@@ -1,8 +1,6 @@
 import { Task } from "../../components/Task/types";
 import { RootState } from "../store";
 
-
-
 const fetchTasksByColumns=(tasks:Task[])=>{
    const groupedTasks=tasks.reduce((accum:any,curr:Task)=>{
       if(!(curr.status in accum))

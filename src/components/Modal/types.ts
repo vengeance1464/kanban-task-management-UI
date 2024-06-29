@@ -25,3 +25,8 @@ export type DeleteProps={
       title:string
       description:string
 } & IBaseModalProps
+
+export type AIPromptModalProps={
+    setCreateBoardOpen:(boardOpen:boolean)=>void,
+    createBoardOpen:boolean
+} & IBaseModalProps

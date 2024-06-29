@@ -16,6 +16,5 @@ export const mapAddTaskData=(data:any):Task=>{
      task.subtasks=  data.subTasks
      task.boardId=data.boardId
 
-
      return task
 }

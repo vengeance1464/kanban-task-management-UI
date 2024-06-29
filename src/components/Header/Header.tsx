@@ -18,17 +18,21 @@ import { useDispatch } from 'react-redux';
 import { updateBoards } from '../../redux/board/boardSlice';
 import { updateTasks } from '../../redux/task/taskSlice';
 import { updateCurrentBoard } from '../../redux/currentBoard/currentBoardSlice';
+import { AIPrompt } from '../Modal/AIAssistant';
 
 export const HeaderComponent: React.FC<HeaderProps> = ({
   setOpen,
   mobileSideBarVisible,
   setMobileSideBarVisible,
+  addBoardOpen,
+  setAddBoardOpen,
 }) => {
   const { isMobile } = useDevice();
   const { user, signIn, signOut } = useFirebaseAuth();
   const boards = useSelector(boardsSelector);
   const currentBoard = useSelector(currentBoardSelector);
   const [profileOpen, setProfileOpen] = React.useState(false);
+  const [aiPrompOpen, setAiPromptOpen] = React.useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -108,15 +112,26 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
             justifyContent={'space-around'}
           >
             {boards.length > 0 && (
-              <Button
-                variant="contained"
-                styles={isMobile ? { width: '3vw', height: '4vh' } : {}}
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                {isMobile ? <Plus /> : '+ Add New Task'}
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  styles={isMobile ? { width: '3vw', height: '4vh' } : {}}
+                  onClick={() => {
+                    setAiPromptOpen(true);
+                  }}
+                >
+                  AI Assistant
+                </Button>
+                <Button
+                  variant="contained"
+                  styles={isMobile ? { width: '3vw', height: '4vh' } : {}}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
+                  {isMobile ? <Plus /> : '+ Add New Task'}
+                </Button>
+              </>
             )}
             <Avatar
               onClick={() => setProfileOpen(true)}
@@ -135,6 +150,17 @@ export const HeaderComponent: React.FC<HeaderProps> = ({
           handleClose={() => {
             setProfileOpen(false);
           }}
+        />
+      )}
+
+      {aiPrompOpen && (
+        <AIPrompt
+          open={aiPrompOpen}
+          handleClose={() => {
+            setAiPromptOpen(false);
+          }}
+          createBoardOpen={addBoardOpen}
+          setCreateBoardOpen={setAddBoardOpen}
         />
       )}
     </>

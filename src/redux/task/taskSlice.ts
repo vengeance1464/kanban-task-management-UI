@@ -293,8 +293,8 @@ const  taskSlice = createSlice({
     // }
   ],
   reducers: {
-    addTask: (state:any, action:PayloadAction<Task>) => {
-       return [...state,action.payload]
+    addTask: (state:any, action:PayloadAction<Task[]>) => {
+       return [...state,...action.payload]
     },
     editTask:(state:any,action:PayloadAction<Task>)=>{
       const filteredTaskIndex=state.findIndex((task:any)=>task.id===action.payload.id)

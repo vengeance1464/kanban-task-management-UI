@@ -76,7 +76,7 @@ const AddTaskComponent: React.FC<AddTaskProps> = ({
       dispatch(editTask(mappedFormData));
     } else {
       const res = await axios.post('/tasks/add', mappedFormData);
-      dispatch(addTask(mappedFormData));
+      dispatch(addTask([mappedFormData]));
     }
     handleClose();
   };

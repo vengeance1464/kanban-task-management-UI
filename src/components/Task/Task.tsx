@@ -59,7 +59,7 @@ const TaskComponent: React.FC<ITaskProps> = ({ task }) => {
           backgroundColor: (theme) => theme.palette.modalColor.backgroundColor,
           boxShadow: '0px 4px 6px 0px rgba(54, 78, 126, 0.10)',
           borderRadius: '8px',
-          width: 'fit-content',
+          width: '10vw',
           padding: '1.5vw',
         }}
         onClick={() => setUpdateTask(true)}

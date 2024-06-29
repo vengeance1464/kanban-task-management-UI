@@ -1,0 +1,9 @@
+﻿{
+  "agentId": 2,
+  "agentName": "Priyam's runner",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus10.actions.githubusercontent.com/ddhzMZyRVkDVs8mVT0oGXSmF05gjI0YW1lDB394f84u16QaNqv/",
+  "gitHubUrl": "https://github.com/vengeance1464/kanban-task-management-UI",
+  "workFolder": "_work"
+}

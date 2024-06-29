@@ -21,6 +21,8 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   onClick,
   mobileSideBarVisible,
   handleClose,
+  addBoardOpen,
+  setAddBoardOpen,
 }) => {
   const theme = useTheme();
   const [itemSelected, setItemSelected] = useState<number>(0);
@@ -29,10 +31,9 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
   const { isMobile } = useDevice();
   const boards = useSelector(boardsSelector);
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
 
   const handleBoardClose = () => {
-    setOpen(false);
+    setAddBoardOpen(false);
   };
 
   const getSideBar = () => {
@@ -85,7 +86,7 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
         <SideBarItem
           onClick={() => {
             setItemSelected(boards.length + 1);
-            setOpen(true);
+            setAddBoardOpen(true);
           }}
           isItemSeleced={itemSelected === boards.length + 1}
           title={'+ Create New Board'}
@@ -151,7 +152,9 @@ const SideBarComponent: React.FC<PropsWithChildren<SideBarProps>> = ({
             </>
           )}
         </Stack>
-        {open && <AddBoard open={open} handleClose={handleBoardClose} />}
+        {addBoardOpen && (
+          <AddBoard open={addBoardOpen} handleClose={handleBoardClose} />
+        )}
       </>
     );
   };

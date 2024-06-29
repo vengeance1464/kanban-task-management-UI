@@ -1,0 +1,24 @@
+# docker-compose.yml
+
+services:
+  backend:
+    build:
+      context: D:/kanban-task-management-backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - D:/kanban-task-management-backend:/usr/src/app
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
