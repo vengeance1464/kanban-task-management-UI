@@ -1,0 +1,38 @@
+name: Docker Deploy
+
+on:
+  push:
+    branches:
+      - main # Adjust branch name if necessary
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build and push backend image
+        run: |
+          docker-compose build backend
+          docker-compose push backend
+
+      - name: Build and push frontend image
+        run: |
+          docker-compose build frontend
+          docker-compose push frontend
+
+      - name: SSH into EC2 and update containers
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /path/to/your/app
+            docker-compose pull
+            docker-compose up -d
