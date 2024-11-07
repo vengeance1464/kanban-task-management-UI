@@ -19,6 +19,7 @@ module.exports = {
   ],
   devServer: {
     port: 3000, // you can change the port
+    disableHostCheck: true
   },
   module: {
     rules: [
