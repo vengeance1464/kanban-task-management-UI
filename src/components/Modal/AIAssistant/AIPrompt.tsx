@@ -50,7 +50,7 @@ const AIPromptComponent: React.FC<AIPromptModalProps> = ({
         .then((res) => res.data);
 
       console.log('suggestions ', aiSuggestions);
-      sanitizeResponse(aiSuggestions);
+      //sanitizeResponse(aiSuggestions);
 
       setAiSuggestions(aiSuggestions.tasks);
       setMessage('');
